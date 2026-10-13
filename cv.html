@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>السيرة الذاتية — CV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="stylesheet" href="css/cv.css" />
+</head>
+<body>
+
+<!-- شريط تحكم علوي (لا يظهر في الطباعة) -->
+<div class="cv-toolbar no-print">
+  <div class="cv-toolbar-inner">
+    <div class="cv-toolbar-info">
+      <i class="fas fa-file-pdf"></i>
+      <span>معاينة السيرة الذاتية</span>
+    </div>
+    <div class="cv-toolbar-actions">
+      <button class="cv-btn cv-btn-ghost" onclick="window.close()">
+        <i class="fas fa-times"></i> إغلاق
+      </button>
+      <button class="cv-btn cv-btn-primary" onclick="window.print()">
+        <i class="fas fa-print"></i> طباعة / حفظ PDF
+      </button>
+    </div>
+  </div>
+  <div class="cv-toolbar-hint">
+    <i class="fas fa-circle-info"></i>
+    للحصول على أعلى دقة: اختر <strong>Save as PDF</strong> كوجهة في نافذة الطباعة، وفعّل <strong>Background graphics</strong>.
+  </div>
+</div>
+
+<!-- السيرة الذاتية -->
+<div class="cv-page" id="cvRoot">
+  <!-- يُبنى ديناميكياً عبر cv.js -->
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/cv.js"></script>
+</body>
+</html>
