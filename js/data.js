@@ -1,6 +1,6 @@
 /* =========================================================
    Portfolio Data — يُدار عبر admin.html
-   آخر تحديث: 2026-10-13T23:58:01.660Z
+   آخر تحديث: 2026-10-13T23:59:49.261Z
    ========================================================= */
 
 window.SITE = {
@@ -60,7 +60,7 @@ window.SITE = {
       {
         "icon": "fa-globe",
         "label": "ZAIDQADDAH.me",
-        "href": "https://theralaugh.github.io/two"
+        "href": "https://theralaugh.github.io/me"
       },
       {
         "icon": "fa-phone-alt",
