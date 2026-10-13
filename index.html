@@ -1,234 +1,47 @@
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>زيد قداح — مصمم منتجات 3D ومطور ويب</title>
-  <meta name="description" content="بورتفوليو زيد قداح: تصميم منتجات ثلاثية الأبعاد (عطور، مايكروفونات، منتجات) وتطوير أنظمة ويب متكاملة بقواعد بيانات." />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-
-  <link rel="stylesheet" href="css/style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bortfoliio</title>
+<meta name="description" content="" />
+<meta name="robots" content="index, follow" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="" />
+<meta property="og:description" content="" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-  <!-- ============ شريط التنقل ============ -->
-  <header class="nav">
-    <a href="#top" class="nav-brand">
-      <span class="nav-mark">Z</span>
-      <span class="nav-name">زيد قداح <small>· ZAID QADDAH</small></span>
-    </a>
-    <nav class="nav-links">
-      <a href="#work-3d">منتجات 3D</a>
-      <a href="#work-web">مشاريع الويب</a>
-      <a href="#about">نبذة</a>
-      <a href="#contact" class="nav-cta">تواصل</a>
-    </nav>
-    <button class="nav-toggle" aria-label="القائمة"><i class="fas fa-bars"></i></button>
-  </header>
+<header class="nav" id="siteNav">
+  <a href="#top" class="nav-brand">
+    <span class="nav-mark" id="brandInitial">·</span>
+    <span class="nav-name" id="brandName"></span>
+  </a>
+  <nav class="nav-links" id="navLinks"></nav>
+  <button class="nav-toggle" id="navToggle" aria-label="القائمة"><i class="fas fa-bars"></i></button>
+</header>
 
-  <!-- ============ Hero ============ -->
-  <section class="hero" id="top">
-    <div class="hero-inner">
-      <span class="hero-badge"><i class="fas fa-cube"></i> متاح للعمل الحر</span>
-      <h1 class="hero-title">
-        أصمّم منتجات <span class="grad">ثلاثية الأبعاد</span><br />
-        وأبني <span class="grad">أنظمة ويب</span> متكاملة.
-      </h1>
-      <p class="hero-sub">
-        طالب هندسة حواسيب وأتمتة — أصنع نماذج منتجات واقعية في Blender
-        (عطور، مايكروفونات، منتجات تجارية)، وأطوّر مواقع وأنظمة إدارة
-        بقواعد بيانات MySQL.
-      </p>
+<main id="page"></main>
 
-      <div class="hero-actions">
-        <a href="#work-3d" class="btn btn-primary"><i class="fas fa-cube"></i> شاهد منتجات 3D</a>
-        <a href="#work-web" class="btn btn-ghost"><i class="fas fa-code"></i> المشاريع البرمجية</a>
-      </div>
+<footer class="footer">
+  <span>© <span id="year"></span> <span id="footerName"></span> — جميع الحقوق محفوظة.</span>
+  <span class="footer-meta"><span id="footerRepo"></span></span>
+</footer>
 
-      <div class="hero-meta">
-        <a href="mailto:zaidqaddah@gmail.com"><i class="fas fa-envelope"></i> zaidqaddah@gmail.com</a>
-        <a href="https://github.com/TheraLaugh" target="_blank" rel="noopener"><i class="fab fa-github"></i> TheraLaugh</a>
-        <a href="tel:+963940891715"><i class="fas fa-phone-alt"></i> 891715 940 963+</a>
-        <a href="https://theralaugh.github.io/me" target="_blank"><i class="fas fa-globe"></i> ZAIDQADDAH.me</a>
-      </div>
-    </div>
-
-    <div class="hero-stats">
-      <div><strong>8+</strong><span>مشاريع على GitHub</span></div>
-      <div><strong>2</strong><span>مجال: 3D + Web</span></div>
-      <div><strong>100%</strong><span>تعلّم ذاتي</span></div>
-    </div>
-  </section>
-
-  <!-- ============ قسم منتجات 3D ============ -->
-  <section class="section" id="work-3d">
-    <div class="section-head">
-      <div>
-        <span class="section-eyebrow"><i class="fas fa-cube"></i> Portfolio / 3D</span>
-        <h2 class="section-title">منتجات ثلاثية الأبعاد</h2>
-        <p class="section-sub">نمذجة، خامات، إضاءة ورندر — جاهزة للاستخدام التجاري والإعلاني.</p>
-      </div>
-      <div class="filters" data-target="3d">
-        <button class="filter is-active" data-filter="all">الكل</button>
-        <button class="filter" data-filter="perfume">عطور</button>
-        <button class="filter" data-filter="audio">صوتيات</button>
-        <button class="filter" data-filter="product">منتجات</button>
-      </div>
-    </div>
-
-    <div class="grid grid-3d" id="grid-3d"></div>
-  </section>
-
-  <!-- ============ قسم مشاريع الويب ============ -->
-  <section class="section section-alt" id="work-web">
-    <div class="section-head">
-      <div>
-        <span class="section-eyebrow"><i class="fas fa-code"></i> Portfolio / Web</span>
-        <h2 class="section-title">مشاريع الويب</h2>
-        <p class="section-sub">تطبيقات وأنظمة متكاملة — من الواجهة إلى قاعدة البيانات.</p>
-      </div>
-      <div class="filters" data-target="web">
-        <button class="filter is-active" data-filter="all">الكل</button>
-        <button class="filter" data-filter="fullstack">Full Stack</button>
-        <button class="filter" data-filter="frontend">واجهات</button>
-        <button class="filter" data-filter="tools">أدوات</button>
-      </div>
-    </div>
-
-    <div class="grid grid-web" id="grid-web"></div>
-  </section>
-
-  <!-- ============ نبذة + مهارات ============ -->
-  <section class="section" id="about">
-    <div class="section-head">
-      <div>
-        <span class="section-eyebrow"><i class="fas fa-user"></i> About</span>
-        <h2 class="section-title">نبذة عني</h2>
-      </div>
-    </div>
-
-    <div class="about-grid">
-      <div class="about-card about-bio">
-        <h3><i class="fas fa-bullseye"></i> الهدف المهني</h3>
-        <p>
-          طالب هندسة حواسيب وأتمتة (السنة الثانية) في جامعة دمشق، أجمع بين
-          <strong>الإبداع البصري</strong> في تصميم المنتجات ثلاثية الأبعاد و<strong>المنطق البرمجي</strong>
-          في بناء أنظمة الويب. أعمل على مشاريع حقيقية تشمل أنظمة إدارة متكاملة،
-          متاجر، وأدوات تفاعلية. أبحث عن فرص تدريب أو عمل حر لتطوير مهاراتي.
-        </p>
-      </div>
-
-      <div class="about-card">
-        <h3><i class="fas fa-cube"></i> أدوات 3D</h3>
-        <div class="chips">
-          <span class="chip">Blender</span>
-          <span class="chip">Cycles</span>
-          <span class="chip">EEVEE</span>
-          <span class="chip">Substance (تعلم)</span>
-          <span class="chip">UV Mapping</span>
-          <span class="chip">PBR Materials</span>
-          <span class="chip">HDRI Lighting</span>
-          <span class="chip">Product Render</span>
-        </div>
-      </div>
-
-      <div class="about-card">
-        <h3><i class="fas fa-laptop-code"></i> تطوير الويب</h3>
-        <div class="chips">
-          <span class="chip">HTML5</span>
-          <span class="chip">CSS3</span>
-          <span class="chip">JavaScript</span>
-          <span class="chip">PHP</span>
-          <span class="chip">MySQL</span>
-          <span class="chip">C++</span>
-          <span class="chip">Git / GitHub</span>
-          <span class="chip">AI-assisted Dev</span>
-        </div>
-      </div>
-
-      <div class="about-card">
-        <h3><i class="fas fa-university"></i> التعليم</h3>
-        <div class="edu-item">
-          <strong>جامعة دمشق</strong>
-          <span>هندسة الحواسيب والأتمتة — السنة الثانية</span>
-        </div>
-        <div class="edu-item">
-          <strong>تعلّم ذاتي مستمر</strong>
-          <span>3D · Web · AI Tools</span>
-        </div>
-      </div>
-
-      <div class="about-card">
-        <h3><i class="fas fa-language"></i> اللغات</h3>
-        <div class="lang">
-          <span class="lang-name">العربية</span>
-          <span class="lang-bar"><i style="width:100%"></i></span>
-          <span class="lang-val">أم</span>
-        </div>
-        <div class="lang">
-          <span class="lang-name">الإنجليزية</span>
-          <span class="lang-bar"><i style="width:70%"></i></span>
-          <span class="lang-val">70%</span>
-        </div>
-        <div class="lang">
-          <span class="lang-name">الروسية</span>
-          <span class="lang-bar"><i style="width:60%"></i></span>
-          <span class="lang-val">60%</span>
-        </div>
-      </div>
-
-      <div class="about-card">
-        <h3><i class="fas fa-user-check"></i> مهارات شخصية</h3>
-        <div class="chips">
-          <span class="chip">تعلّم ذاتي</span>
-          <span class="chip">حل المشكلات</span>
-          <span class="chip">العمل ضمن فريق</span>
-          <span class="chip">تفكير تجاري</span>
-          <span class="chip">إدارة وقت</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ تواصل ============ -->
-  <section class="contact" id="contact">
-    <div class="contact-inner">
-      <h2>هل لديك مشروع؟</h2>
-      <p>سواء كان نموذج منتج 3D أو موقع ويب متكامل — لنتحدث.</p>
-      <div class="contact-actions">
-        <a href="mailto:zaidqaddah@gmail.com" class="btn btn-primary">
-          <i class="fas fa-envelope"></i> zaidqaddah@gmail.com
-        </a>
-        <a href="https://wa.me/963940891715" target="_blank" class="btn btn-ghost">
-          <i class="fab fa-whatsapp"></i> واتساب
-        </a>
-      </div>
-      <div class="contact-socials">
-        <a href="https://github.com/TheraLaugh" target="_blank" rel="noopener"><i class="fab fa-github"></i> GitHub</a>
-        <a href="https://theralaugh.github.io/me" target="_blank"><i class="fas fa-globe"></i> الموقع</a>
-      </div>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <span>© <span id="year"></span> زيد قداح — جميع الحقوق محفوظة.</span>
-    <span>صُنع بـ HTML · CSS · JS</span>
-  </footer>
-
-  <!-- ============ Modal تفاصيل ============ -->
-  <div class="modal" id="modal" aria-hidden="true">
-    <div class="modal-backdrop" data-close></div>
-    <div class="modal-content" role="dialog" aria-modal="true">
-      <button class="modal-close" data-close aria-label="إغلاق"><i class="fas fa-times"></i></button>
-      <div class="modal-body" id="modal-body"></div>
-    </div>
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-content" role="dialog" aria-modal="true">
+    <button class="modal-close" data-close aria-label="إغلاق"><i class="fas fa-times"></i></button>
+    <div class="modal-body" id="modalBody"></div>
   </div>
+</div>
 
-  <script src="js/data.js"></script>
-  <script src="js/main.js"></script>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
