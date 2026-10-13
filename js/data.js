@@ -1,6 +1,6 @@
 /* =========================================================
    Portfolio Data — يُدار عبر admin.html
-   آخر تحديث: 2026-10-13T23:25:23.775Z
+   آخر تحديث: 2026-10-13T23:58:01.660Z
    ========================================================= */
 
 window.SITE = {
@@ -175,7 +175,7 @@ window.SITE = {
     "email": "zaidqaddah@gmail.com",
     "whatsapp": "963940891715",
     "github": "TheraLaugh",
-    "website": "theralaugh.github.io/two"
+    "website": "theralaugh.github.io/me"
   },
   "categories3d": [
     {
