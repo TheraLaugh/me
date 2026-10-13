@@ -5,6 +5,25 @@
 /* ===== منتجات 3D ===== */
 window.PRODUCTS_3D = [
   {
+    "id": "عطر-thera-الفاخر",
+    "name": "عطر thera الفاخر",
+    "category": "perfume",
+    "tag": "زجاج - تأثير رخامي",
+    "cover": "assets/3d/عطر-thera-الفاخر/cover.jpg",
+    "gallery": [
+      "assets/3d/عطر-thera-الفاخر/cover.jpg"
+    ],
+    "short": "زجاجة عطر بتأثير رخامي على الغطاء",
+    "description": "زجاجة عطر فاخرة بتأثير رخامي على الغطاء.\nمراعاة الطبلوجيا\nمراعاة IOR للزجاج والمادة العطرية\nمراعاة سماكة الزجاج",
+    "software": [
+      "Blender"
+    ],
+    "render": "Cycles · 4K",
+    "polys": "—",
+    "time": "—",
+    "details": []
+  },
+  {
     id: "perfume-noir",
     name: "عطر Noir — زجاج ومعدن",
     category: "perfume",
