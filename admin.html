@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>لوحة إدارة المشاريع</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --blue: #0a66c2; --blue-dark: #084d94; --blue-soft: #e6f0ff;
+    --ink: #0a1a2b; --ink-soft: #2c4056; --muted: #6a7f94;
+    --line: #e2ecf5; --white: #fff; --bg: #f6f9fc;
+    --ok: #1a9c56; --warn: #d97706; --err: #dc2626;
+    --radius: 16px; --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  body {
+    font-family: 'Cairo', system-ui, sans-serif;
+    background: var(--bg); color: var(--ink);
+    line-height: 1.6; padding: 20px; min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+
+  /* ---------- Header ---------- */
+  .head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+    padding: 20px 26px; background: #fff; border-radius: var(--radius);
+    box-shadow: 0 4px 20px -8px rgba(0, 40, 80, 0.08);
+    margin-bottom: 20px;
+    border: 1px solid var(--line);
+  }
+  .head h1 { font-size: 1.3rem; font-weight: 900; display: flex; align-items: center; gap: 10px; }
+  .head h1 i { color: var(--blue); }
+  .head-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 18px; border-radius: 40px; border: none;
+    font-family: inherit; font-size: 13px; font-weight: 700;
+    cursor: pointer; transition: all 0.25s var(--ease);
+    text-decoration: none; color: inherit;
+  }
+  .btn-primary { background: var(--blue); color: #fff; }
+  .btn-primary:hover:not(:disabled) { background: var(--blue-dark); transform: translateY(-1px); }
+  .btn-ghost { background: var(--blue-soft); color: var(--blue); }
+  .btn-ghost:hover:not(:disabled) { background: #d4e6ff; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn i { font-size: 12px; }
+
+  /* ---------- Settings ---------- */
+  .settings {
+    background: #fff; border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 20px 24px;
+    margin-bottom: 20px; display: none;
+  }
+  .settings.is-open { display: block; }
+  .settings h3 { font-size: 15px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .settings h3 i { color: var(--blue); }
+  .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .field label { display: block; font-size: 12px; font-weight: 700; color: var(--ink-soft); margin-bottom: 6px; }
+  .field input, .field select, .field textarea {
+    width: 100%; padding: 10px 14px; border-radius: 12px;
+    border: 1.5px solid var(--line); background: #fafcff;
+    font-family: inherit; font-size: 14px; color: var(--ink);
+    transition: all 0.2s var(--ease);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none; border-color: var(--blue); background: #fff;
+    box-shadow: 0 0 0 4px rgba(10, 102, 194, 0.08);
+  }
+  .field textarea { resize: vertical; min-height: 80px; line-height: 1.7; }
+  .hint {
+    font-size: 12px; color: var(--muted); margin-top: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .hint i { color: var(--warn); }
+
+  /* ---------- Tabs ---------- */
+  .tabs {
+    display: inline-flex; background: #fff; padding: 5px;
+    border-radius: 40px; border: 1px solid var(--line); margin-bottom: 20px;
+  }
+  .tab {
+    padding: 10px 24px; border: none; background: none;
+    font-family: inherit; font-size: 14px; font-weight: 700;
+    color: var(--muted); border-radius: 40px; cursor: pointer;
+    transition: all 0.25s var(--ease);
+  }
+  .tab.is-active { background: var(--blue); color: #fff; }
+
+  /* ---------- Layout ---------- */
+  .layout {
+    display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 960px) { .layout { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: #fff; border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 26px;
+    box-shadow: 0 4px 20px -8px rgba(0, 40, 80, 0.06);
+  }
+  .panel h2 {
+    font-size: 1.05rem; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: 14px; border-bottom: 1px solid var(--line);
+  }
+  .panel h2 i { color: var(--blue); }
+
+  .form-grid { display: grid; gap: 16px; }
+  .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 500px) { .form-row-2 { grid-template-columns: 1fr; } }
+
+  /* ---------- Drop zone ---------- */
+  .drop {
+    border: 2px dashed var(--line); border-radius: var(--radius);
+    padding: 30px 20px; text-align: center; cursor: pointer;
+    transition: all 0.25s var(--ease);
+    background: #fafcff; margin-top: 4px;
+  }
+  .drop:hover, .drop.is-over {
+    border-color: var(--blue); background: var(--blue-soft);
+  }
+  .drop i {
+    font-size: 32px; color: var(--blue);
+    margin-bottom: 10px; display: block;
+  }
+  .drop strong { display: block; margin-bottom: 4px; font-size: 14px; }
+  .drop small { color: var(--muted); font-size: 12px; }
+
+  .thumbs {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 10px; margin-top: 14px;
+  }
+  .thumb {
+    position: relative; aspect-ratio: 1/1; border-radius: 12px;
+    overflow: hidden; border: 1.5px solid var(--line); background: #f0f5fa;
+  }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .thumb .badge {
+    position: absolute; top: 6px; right: 6px;
+    background: rgba(10, 26, 43, 0.85); color: #fff;
+    font-size: 10px; font-weight: 700; padding: 3px 8px;
+    border-radius: 20px;
+  }
+  .thumb .badge.cover { background: var(--blue); }
+  .thumb .rm {
+    position: absolute; top: 6px; left: 6px;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: rgba(220, 38, 38, 0.9); color: #fff;
+    border: none; cursor: pointer; font-size: 10px;
+    display: grid; place-items: center;
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .thumb:hover .rm { opacity: 1; }
+  .thumb .meta {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.75));
+    color: #fff; font-size: 9px; padding: 12px 8px 6px;
+    font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  /* ---------- Preview ---------- */
+  .preview-card {
+    background: #fff; border: 1px solid var(--line);
+    border-radius: var(--radius); overflow: hidden; margin-top: 10px;
+  }
+  .preview-media {
+    aspect-ratio: 1/1; background: linear-gradient(135deg, #f5f8fc, #e9f2f9);
+    display: grid; place-items: center; color: var(--muted);
+    font-size: 40px; position: relative; overflow: hidden;
+  }
+  .preview-media img { width: 100%; height: 100%; object-fit: cover; }
+  .preview-media .tag {
+    position: absolute; top: 12px; right: 12px;
+    background: rgba(255,255,255,0.94); color: var(--blue);
+    font-size: 10px; font-weight: 700; padding: 4px 10px;
+    border-radius: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .preview-body { padding: 16px 18px; }
+  .preview-body h4 { font-size: 1rem; margin-bottom: 6px; }
+  .preview-body p { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 10px; }
+  .preview-body .tools { display: flex; flex-wrap: wrap; gap: 5px; }
+  .preview-body .tools span {
+    background: var(--blue-soft); color: var(--blue);
+    font-size: 10px; font-weight: 700; padding: 3px 9px;
+    border-radius: 20px;
+  }
+
+  /* ---------- Progress / Log ---------- */
+  .log {
+    background: #0a1a2b; color: #b8c6d8;
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 12px; padding: 16px 18px;
+    border-radius: var(--radius); margin-top: 16px;
+    max-height: 240px; overflow-y: auto;
+    display: none;
+  }
+  .log.is-open { display: block; }
+  .log-line { padding: 3px 0; display: flex; gap: 8px; }
+  .log-line .t { color: var(--muted); min-width: 60px; }
+  .log-line.ok .v { color: #4ade80; }
+  .log-line.err .v { color: #f87171; }
+  .log-line.info .v { color: #60a5fa; }
+  .log-line.warn .v { color: #fbbf24; }
+
+  .result {
+    display: none; margin-top: 16px; padding: 18px 20px;
+    border-radius: var(--radius); background: var(--blue-soft);
+    border: 1.5px solid rgba(10, 102, 194, 0.2);
+  }
+  .result.is-open { display: block; }
+  .result h4 { color: var(--blue); margin-bottom: 8px; font-size: 14px; }
+  .result p { font-size: 13px; color: var(--ink-soft); margin-bottom: 12px; }
+  .result .btn { margin-top: 4px; }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--ink); color: #fff;
+    padding: 14px 22px; border-radius: 40px;
+    font-size: 13px; font-weight: 600;
+    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
+    opacity: 0; transition: all 0.4s var(--ease);
+    z-index: 999; max-width: 90vw;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .toast.is-on { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.ok { background: var(--ok); }
+  .toast.err { background: var(--err); }
+  .toast.warn { background: var(--warn); }
+
+  .sect-title {
+    font-size: 12px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--blue); margin: 20px 0 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sect-title::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ====== Header ====== -->
+  <header class="head">
+    <h1><i class="fas fa-rocket"></i> لوحة إدارة المشاريع</h1>
+    <div class="head-actions">
+      <button class="btn btn-ghost" id="openSettings"><i class="fas fa-cog"></i> الإعدادات</button>
+      <a href="./" class="btn btn-ghost"><i class="fas fa-eye"></i> عرض الموقع</a>
+    </div>
+  </header>
+
+  <!-- ====== Settings ====== -->
+  <div class="settings" id="settingsPanel">
+    <h3><i class="fas fa-key"></i> إعدادات GitHub (تُحفظ في متصفحك فقط)</h3>
+    <div class="settings-grid">
+      <div class="field">
+        <label>المالك (Owner)</label>
+        <input id="setOwner" placeholder="theralaugh" />
+      </div>
+      <div class="field">
+        <label>المستودع (Repo)</label>
+        <input id="setRepo" placeholder="me" />
+      </div>
+      <div class="field">
+        <label>الفرع (Branch)</label>
+        <input id="setBranch" placeholder="main" />
+      </div>
+      <div class="field">
+        <label>مسار data.js</label>
+        <input id="setDataPath" placeholder="js/data.js" />
+      </div>
+      <div class="field" style="grid-column: 1/-1;">
+        <label>Personal Access Token (fine-grained، صلاحية Contents: Read & Write فقط)</label>
+        <input id="setToken" type="password" placeholder="github_pat_..." />
+        <p class="hint"><i class="fas fa-triangle-exclamation"></i> احتفظ بالتوكن سرياً. لا تشاركه، ولا تستخدمه على جهاز عام. استخدم توكن محدود بصلاحية هذا المستودع فقط.</p>
+      </div>
+    </div>
+    <div style="margin-top: 16px; display: flex; gap: 8px;">
+      <button class="btn btn-primary" id="saveSettings"><i class="fas fa-save"></i> حفظ</button>
+      <button class="btn btn-ghost" id="testConnection"><i class="fas fa-plug"></i> اختبار الاتصال</button>
+    </div>
+  </div>
+
+  <!-- ====== Tabs ====== -->
+  <div class="tabs">
+    <button class="tab is-active" data-type="3d"><i class="fas fa-cube"></i> منتج 3D</button>
+    <button class="tab" data-type="web"><i class="fas fa-code"></i> مشروع ويب</button>
+  </div>
+
+  <!-- ====== Layout ====== -->
+  <div class="layout">
+
+    <!-- ====== Form Panel ====== -->
+    <div class="panel">
+      <h2 id="formTitle"><i class="fas fa-plus-circle"></i> إضافة منتج 3D جديد</h2>
+
+      <!-- === 3D FORM === -->
+      <div id="form3d" class="form-grid">
+        <div class="form-row-2">
+          <div class="field">
+            <label>اسم المنتج *</label>
+            <input id="p3d_name" placeholder="مثال: عطر Noir الفاخر" />
+          </div>
+          <div class="field">
+            <label>المعرّف (Slug — يُولّد تلقائياً)</label>
+            <input id="p3d_id" placeholder="perfume-noir" />
+            <p class="hint">يُستخدم كاسم مجلد للصور. عدّله يدوياً إن أردت.</p>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="field">
+            <label>الفئة *</label>
+            <select id="p3d_category">
+              <option value="perfume">عطور</option>
+              <option value="audio">صوتيات</option>
+              <option value="product">منتجات</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>الوسم (Tag) *</label>
+            <input id="p3d_tag" placeholder="عطر · زجاج" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>وصف قصير (يظهر في البطاقة) *</label>
+          <input id="p3d_short" placeholder="زجاجة عطر بتصميم فاخر وخامات دقيقة." />
+        </div>
+
+        <div class="field">
+          <label>الوصف الكامل (يظهر في المودال) *</label>
+          <textarea id="p3d_description" placeholder="اشرح فكرة المشروع، التحديات، والحلول..."></textarea>
+        </div>
+
+        <div class="sect-title"><i class="fas fa-images"></i> صور المنتج</div>
+
+        <div class="drop" id="drop3d">
+          <i class="fas fa-cloud-arrow-up"></i>
+          <strong>اسحب الصور هنا أو اضغط للاختيار</strong>
+          <small>الصورة الأولى = الغلاف · الباقي = معرض · تُضغط تلقائياً إلى 1600px وجودة 85%</small>
+          <input type="file" id="file3d" accept="image/*" multiple hidden />
+        </div>
+        <div class="thumbs" id="thumbs3d"></div>
+
+        <div class="sect-title"><i class="fas fa-sliders"></i> المواصفات الفنية</div>
+        <div class="form-row-2">
+          <div class="field">
+            <label>البرامج (افصل بفاصلة)</label>
+            <input id="p3d_software" placeholder="Blender, Cycles" value="Blender" />
+          </div>
+          <div class="field">
+            <label>نوع الرندر</label>
+            <input id="p3d_render" placeholder="Cycles · 4K" value="Cycles · 4K" />
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="field">
+            <label>عدد المضلعات</label>
+            <input id="p3d_polys" placeholder="~45K" />
+          </div>
+          <div class="field">
+            <label>مدة العمل</label>
+            <input id="p3d_time" placeholder="3 أيام" />
+          </div>
+        </div>
+        <div class="field">
+          <label>تفاصيل تقنية (سطر لكل نقطة)</label>
+          <textarea id="p3d_details" placeholder="محاكاة زجاج مع IOR 1.45&#10;خامة معدنية مصقولة&#10;إضاءة استوديو ثلاثية النقاط"></textarea>
+        </div>
+      </div>
+
+      <!-- === WEB FORM === -->
+      <div id="formWeb" class="form-grid" style="display:none;">
+        <div class="form-row-2">
+          <div class="field">
+            <label>اسم المشروع *</label>
+            <input id="pw_name" placeholder="TheraWork" />
+          </div>
+          <div class="field">
+            <label>المعرّف (Slug) *</label>
+            <input id="pw_id" placeholder="therawork" />
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="field">
+            <label>الوصف الفرعي *</label>
+            <input id="pw_subtitle" placeholder="نظام إدارة المواعيد" />
+          </div>
+          <div class="field">
+            <label>الفئة *</label>
+            <select id="pw_category">
+              <option value="fullstack">Full Stack</option>
+              <option value="frontend">واجهات</option>
+              <option value="tools">أدوات</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="field">
+            <label>أيقونة FontAwesome *</label>
+            <input id="pw_icon" placeholder="fa-calendar-check" value="fa-code" />
+            <p class="hint">مثال: fa-users · fa-chart-line · fa-qrcode · fa-dumbbell</p>
+          </div>
+          <div class="field">
+            <label>التقنيات (افصل بفاصلة) *</label>
+            <input id="pw_tech" placeholder="HTML, CSS, JavaScript, PHP, MySQL" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>الوصف القصير *</label>
+          <textarea id="pw_desc" placeholder="تطبيق ويب تفاعلي لإدارة المواعيد..."></textarea>
+        </div>
+
+        <div class="field">
+          <label>النقاط الرئيسية (سطر لكل نقطة) *</label>
+          <textarea id="pw_bullets" placeholder="جدول ديناميكي مع إضافة/حذف&#10;نظام ألوان ذكي&#10;تنبيهات صوتية وزمنية"></textarea>
+        </div>
+
+        <div class="sect-title"><i class="fas fa-link"></i> الروابط</div>
+        <div class="form-row-2">
+          <div class="field">
+            <label>رابط GitHub</label>
+            <input id="pw_github" placeholder="https://github.com/..." />
+          </div>
+          <div class="field">
+            <label>رابط الموقع المباشر</label>
+            <input id="pw_demo" placeholder="https://..." />
+          </div>
+        </div>
+        <div class="field">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" id="pw_private" style="width: auto;" />
+            <span>مشروع خاص (لن تظهر الروابط، سيُعرض شعار "خاص")</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- === Actions === -->
+      <div style="margin-top: 24px; display: flex; gap: 10px; flex-wrap: wrap;">
+        <button class="btn btn-primary" id="publishBtn" style="flex: 1; justify-content: center; min-width: 200px;">
+          <i class="fas fa-cloud-arrow-up"></i> نشر مباشر إلى GitHub
+        </button>
+        <button class="btn btn-ghost" id="zipBtn" style="flex: 1; justify-content: center; min-width: 180px;">
+          <i class="fas fa-file-zipper"></i> تحميل حزمة ZIP
+        </button>
+      </div>
+
+      <!-- === Log === -->
+      <div class="log" id="log"></div>
+
+      <!-- === Result === -->
+      <div class="result" id="result"></div>
+    </div>
+
+    <!-- ====== Preview Panel ====== -->
+    <div class="panel">
+      <h2><i class="fas fa-eye"></i> معاينة مباشرة</h2>
+      <div class="preview-card">
+        <div class="preview-media" id="prevMedia">
+          <i class="fas fa-image"></i>
+          <span class="tag" id="prevTag">الوسم</span>
+        </div>
+        <div class="preview-body">
+          <h4 id="prevTitle">اسم المشروع</h4>
+          <p id="prevDesc">الوصف سيظهر هنا...</p>
+          <div class="tools" id="prevTools"></div>
+        </div>
+      </div>
+
+      <h2 style="margin-top: 24px;"><i class="fas fa-info-circle"></i> كيف يعمل؟</h2>
+      <ol style="padding-right: 20px; color: var(--ink-soft); font-size: 13px; line-height: 1.9;">
+        <li>املأ البيانات وأضف الصور.</li>
+        <li>الصور <strong>تُضغط وتُعاد تسميتها تلقائياً</strong>: <code>cover.jpg</code>، <code>view-1.jpg</code>...</li>
+        <li>اضغط <strong>نشر مباشر</strong> ← يُرفع كل شيء إلى GitHub ويُحدَّث <code>data.js</code> في commit واحد.</li>
+        <li>خلال دقيقة يظهر مشروعك على الموقع تلقائياً! 🎉</li>
+      </ol>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   Utilities
+   ========================================================= */
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => document.querySelectorAll(s);
+
+function slugify(text) {
+  return String(text)
+    .toString().toLowerCase().trim()
+    .replace(/[^\w\u0600-\u06FF]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .replace(/-+/g, '-') || 'project-' + Date.now();
+}
+
+function toast(msg, type = '') {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.className = 'toast is-on ' + type;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('is-on'), 3500);
+}
+
+function log(msg, type = 'info') {
+  const el = $('#log');
+  el.classList.add('is-open');
+  const time = new Date().toLocaleTimeString('ar-EG', { hour12: false });
+  const line = document.createElement('div');
+  line.className = 'log-line ' + type;
+  line.innerHTML = `<span class="t">${time}</span><span class="v">${msg}</span>`;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+
+/* =========================================================
+   Settings
+   ========================================================= */
+const SETTINGS_KEY = 'portfolio-admin-settings';
+function loadSettings() {
+  try {
+    const s = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
+    $('#setOwner').value = s.owner || 'theralaugh';
+    $('#setRepo').value = s.repo || 'me';
+    $('#setBranch').value = s.branch || 'main';
+    $('#setDataPath').value = s.dataPath || 'js/data.js';
+    $('#setToken').value = s.token || '';
+  } catch (e) {}
+}
+function getSettings() {
+  return {
+    owner: $('#setOwner').value.trim(),
+    repo: $('#setRepo').value.trim(),
+    branch: $('#setBranch').value.trim() || 'main',
+    dataPath: $('#setDataPath').value.trim() || 'js/data.js',
+    token: $('#setToken').value.trim()
+  };
+}
+loadSettings();
+$('#openSettings').addEventListener('click', () => {
+  $('#settingsPanel').classList.toggle('is-open');
+});
+$('#saveSettings').addEventListener('click', () => {
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(getSettings()));
+  toast('تم حفظ الإعدادات في المتصفح', 'ok');
+});
+
+/* =========================================================
+   GitHub API helpers
+   ========================================================= */
+async function gh(path, opts = {}) {
+  const s = getSettings();
+  if (!s.token) throw new Error('التوكن غير مضبوط');
+  const url = `https://api.github.com/repos/${s.owner}/${s.repo}/contents/${path}`;
+  const headers = {
+    'Authorization': `token ${s.token}`,
+    'Accept': 'application/vnd.github.v3+json',
+    'Content-Type': 'application/json',
+    ...(opts.headers || {})
+  };
+  const res = await fetch(url + (opts.query || ''), { ...opts, headers });
+  if (opts.method === 'PUT' && res.status === 201) return res.json();
+  if (opts.method === 'PUT' && res.status === 200) return res.json();
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+async function getFile(path) {
+  try {
+    const data = await gh(path, { query: `?ref=${getSettings().branch}` });
+    const content = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
+    return { content, sha: data.sha };
+  } catch (e) {
+    if (String(e.message).includes('Not Found')) return null;
+    throw e;
+  }
+}
+
+async function putFile(path, contentBase64, message, sha) {
+  const body = { message, content: contentBase64, branch: getSettings().branch };
+  if (sha) body.sha = sha;
+  return gh(path, { method: 'PUT', body: JSON.stringify(body) });
+}
+
+async function putText(path, text, message) {
+  const existing = await getFile(path);
+  const content = btoa(unescape(encodeURIComponent(text)));
+  return putFile(path, content, message, existing ? existing.sha : null);
+}
+
+$('#testConnection').addEventListener('click', async () => {
+  try {
+    log('اختبار الاتصال بـ GitHub...', 'info');
+    const s = getSettings();
+    if (!s.token || !s.owner || !s.repo) throw new Error('أكمل الإعدادات أولاً');
+    const data = await gh(s.dataPath, { query: `?ref=${s.branch}` });
+    log(`✔ متصل بنجاح — ${data.name} (${data.size} bytes)`, 'ok');
+    toast('الاتصال ناجح ✔', 'ok');
+  } catch (e) {
+    log('✘ فشل: ' + e.message, 'err');
+    toast('فشل الاتصال: ' + e.message, 'err');
+  }
+});
+
+/* =========================================================
+   Image processing
+   ========================================================= */
+async function processImage(file, maxSize = 1600, quality = 0.85) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      let { width, height } = img;
+      if (width > maxSize || height > maxSize) {
+        const r = Math.min(maxSize / width, maxSize / height);
+        width = Math.round(width * r);
+        height = Math.round(height * r);
+      }
+      const c = document.createElement('canvas');
+      c.width = width; c.height = height;
+      const ctx = c.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      c.toBlob((blob) => {
+        URL.revokeObjectURL(url);
+        resolve({ blob, width, height, originalSize: file.size, newSize: blob.size });
+      }, 'image/jpeg', quality);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('فشل تحميل الصورة')); };
+    img.src = url;
+  });
+}
+
+async function blobToBase64(blob) {
+  return new Promise((resolve) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(',')[1]);
+    r.readAsDataURL(blob);
+  });
+}
+
+function formatBytes(b) {
+  if (b < 1024) return b + ' B';
+  if (b < 1024 * 1024) return (b / 1024).toFixed(1) + ' KB';
+  return (b / (1024 * 1024)).toFixed(2) + ' MB';
+}
+
+/* =========================================================
+   Drop zone
+   ========================================================= */
+let images3d = []; // { blob, name, width, height, originalSize, newSize, previewURL }
+
+function renderThumbs() {
+  const el = $('#thumbs3d');
+  el.innerHTML = '';
+  images3d.forEach((im, i) => {
+    const div = document.createElement('div');
+    div.className = 'thumb';
+    div.innerHTML = `
+      <img src="${im.previewURL}" alt="" />
+      <span class="badge ${i === 0 ? 'cover' : ''}">${i === 0 ? 'غلاف' : i}</span>
+      <button class="rm" data-i="${i}" title="حذف"><i class="fas fa-times"></i></button>
+      <span class="meta">${im.name} · ${formatBytes(im.newSize)}</span>
+    `;
+    el.appendChild(div);
+  });
+  el.querySelectorAll('.rm').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      images3d.splice(+btn.dataset.i, 1);
+      renderThumbs();
+      updatePreview();
+    });
+  });
+  updatePreview();
+}
+
+async function handleFiles(files) {
+  const arr = Array.from(files).filter((f) => f.type.startsWith('image/'));
+  if (!arr.length) return;
+  toast(`معالجة ${arr.length} صورة...`, 'info');
+  for (const f of arr) {
+    try {
+      const { blob, width, height, originalSize, newSize } = await processImage(f);
+      const idx = images3d.length;
+      const name = idx === 0 ? 'cover.jpg' : `view-${idx}.jpg`;
+      images3d.push({
+        blob, name, width, height,
+        originalSize, newSize,
+        previewURL: URL.createObjectURL(blob)
+      });
+      log(`✔ ${f.name} → ${name} (${formatBytes(originalSize)} → ${formatBytes(newSize)})`, 'ok');
+    } catch (e) {
+      log('✘ ' + f.name + ': ' + e.message, 'err');
+    }
+  }
+  renderThumbs();
+  toast('تمت معالجة الصور', 'ok');
+}
+
+$('#drop3d').addEventListener('click', () => $('#file3d').click());
+$('#file3d').addEventListener('change', (e) => handleFiles(e.target.files));
+['dragenter', 'dragover'].forEach((ev) =>
+  $('#drop3d').addEventListener(ev, (e) => { e.preventDefault(); $('#drop3d').classList.add('is-over'); })
+);
+['dragleave', 'drop'].forEach((ev) =>
+  $('#drop3d').addEventListener(ev, (e) => { e.preventDefault(); $('#drop3d').classList.remove('is-over'); })
+);
+$('#drop3d').addEventListener('drop', (e) => handleFiles(e.dataTransfer.files));
+
+/* =========================================================
+   Tabs
+   ========================================================= */
+let currentType = '3d';
+$$('.tab').forEach((tab) => {
+  tab.addEventListener('click', () => {
+    $$('.tab').forEach((t) => t.classList.remove('is-active'));
+    tab.classList.add('is-active');
+    currentType = tab.dataset.type;
+    $('#form3d').style.display = currentType === '3d' ? '' : 'none';
+    $('#formWeb').style.display = currentType === 'web' ? '' : 'none';
+    $('#formTitle').innerHTML = currentType === '3d'
+      ? '<i class="fas fa-cube"></i> إضافة منتج 3D جديد'
+      : '<i class="fas fa-code"></i> إضافة مشروع ويب جديد';
+    updatePreview();
+  });
+});
+
+/* =========================================================
+   Auto-slug & live preview
+   ========================================================= */
+let idTouched = false;
+$('#p3d_id').addEventListener('input', () => idTouched = true);
+$('#pw_id').addEventListener('input', () => idTouched = true);
+
+function autoSlug() {
+  if (idTouched) return;
+  if (currentType === '3d') {
+    const n = $('#p3d_name').value.trim();
+    if (n) $('#p3d_id').value = slugify(n);
+  } else {
+    const n = $('#pw_name').value.trim();
+    if (n) $('#pw_id').value = slugify(n);
+  }
+}
+
+function updatePreview() {
+  if (currentType === '3d') {
+    $('#prevTitle').textContent = $('#p3d_name').value || 'اسم المنتج';
+    $('#prevDesc').textContent = $('#p3d_short').value || 'الوصف القصير...';
+    $('#prevTag').textContent = $('#p3d_tag').value || 'الوسم';
+    const tools = $('#p3d_software').value.split(',').map((s) => s.trim()).filter(Boolean);
+    $('#prevTools').innerHTML = tools.map((t) => `<span>${t}</span>`).join('');
+    if (images3d[0]) {
+      $('#prevMedia').innerHTML = `<img src="${images3d[0].previewURL}" alt="" /><span class="tag">${$('#p3d_tag').value || 'الوسم'}</span>`;
+    } else {
+      $('#prevMedia').innerHTML = `<i class="fas fa-image"></i><span class="tag">${$('#p3d_tag').value || 'الوسم'}</span>`;
+    }
+  } else {
+    $('#prevTitle').textContent = $('#pw_name').value || 'اسم المشروع';
+    $('#prevDesc').textContent = $('#pw_desc').value || 'الوصف...';
+    $('#prevTag').textContent = $('#pw_subtitle').value || 'الوصف الفرعي';
+    const tools = $('#pw_tech').value.split(',').map((s) => s.trim()).filter(Boolean);
+    $('#prevTools').innerHTML = tools.map((t) => `<span>${t}</span>`).join('');
+    $('#prevMedia').innerHTML = `<i class="fas ${$('#pw_icon').value || 'fa-code'}" style="color:var(--blue);"></i><span class="tag">${$('#pw_subtitle').value || ''}</span>`;
+  }
+}
+
+['p3d_name','p3d_short','p3d_tag','p3d_software','pw_name','pw_desc','pw_subtitle','pw_tech','pw_icon']
+  .forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => { autoSlug(); updatePreview(); });
+  });
+
+/* =========================================================
+   Build project object
+   ========================================================= */
+function buildProject3D() {
+  const id = $('#p3d_id').value.trim() || slugify($('#p3d_name').value);
+  if (!id) throw new Error('المعرّف مطلوب');
+  if (!$('#p3d_name').value.trim()) throw new Error('اسم المنتج مطلوب');
+  if (!images3d.length) throw new Error('أضف صورة واحدة على الأقل');
+  const folder = `assets/3d/${id}`;
+  return {
+    obj: {
+      id,
+      name: $('#p3d_name').value.trim(),
+      category: $('#p3d_category').value,
+      tag: $('#p3d_tag').value.trim() || 'منتج',
+      cover: `${folder}/${images3d[0].name}`,
+      gallery: images3d.map((im) => `${folder}/${im.name}`),
+      short: $('#p3d_short').value.trim(),
+      description: $('#p3d_description').value.trim(),
+      software: $('#p3d_software').value.split(',').map((s) => s.trim()).filter(Boolean),
+      render: $('#p3d_render').value.trim() || '—',
+      polys: $('#p3d_polys').value.trim() || '—',
+      time: $('#p3d_time').value.trim() || '—',
+      details: $('#p3d_details').value.split('\n').map((s) => s.trim()).filter(Boolean)
+    },
+    folder
+  };
+}
+
+function buildProjectWeb() {
+  const id = $('#pw_id').value.trim() || slugify($('#pw_name').value);
+  if (!id) throw new Error('المعرّف مطلوب');
+  if (!$('#pw_name').value.trim()) throw new Error('اسم المشروع مطلوب');
+  const isPrivate = $('#pw_private').checked;
+  return {
+    obj: {
+      id,
+      name: $('#pw_name').value.trim(),
+      subtitle: $('#pw_subtitle').value.trim(),
+      icon: $('#pw_icon').value.trim() || 'fa-code',
+      category: $('#pw_category').value,
+      tech: $('#pw_tech').value.split(',').map((s) => s.trim()).filter(Boolean),
+      desc: $('#pw_desc').value.trim(),
+      bullets: $('#pw_bullets').value.split('\n').map((s) => s.trim()).filter(Boolean),
+      links: {
+        github: isPrivate ? null : ($('#pw_github').value.trim() || null),
+        demo: isPrivate ? null : ($('#pw_demo').value.trim() || null)
+      },
+      ...(isPrivate ? { private: true } : {})
+    }
+  };
+}
+
+/* =========================================================
+   Inject into data.js
+   ========================================================= */
+function injectProject(dataJsText, arrayName, projectObject) {
+  const marker = `window.${arrayName} = [`;
+  const idx = dataJsText.indexOf(marker);
+  if (idx === -1) throw new Error(`لم يُعثر على ${arrayName} في data.js`);
+
+  const projectJson = JSON.stringify(projectObject, null, 2)
+    .split('\n').map((l, i) => i === 0 ? l : '  ' + l).join('\n');
+
+  const insertPos = idx + marker.length;
+  return dataJsText.slice(0, insertPos) + '\n  ' + projectJson + ',' + dataJsText.slice(insertPos);
+}
+
+/* =========================================================
+   Publish
+   ========================================================= */
+$('#publishBtn').addEventListener('click', async () => {
+  const btn = $('#publishBtn');
+  btn.disabled = true;
+  $('#log').innerHTML = '';
+  try {
+    const s = getSettings();
+    if (!s.token || !s.owner || !s.repo) throw new Error('اضبط الإعدادات أولاً (توكن، owner، repo)');
+
+    let built;
+    if (currentType === '3d') built = buildProject3D();
+    else built = buildProjectWeb();
+
+    log('بدء النشر...', 'info');
+
+    // 1) رفع الصور (إن وجدت)
+    if (currentType === '3d' && images3d.length) {
+      for (const im of images3d) {
+        const path = `${built.folder}/${im.name}`;
+        const base64 = await blobToBase64(im.blob);
+        await putFile(path, base64, `Add ${built.folder}/${im.name}`, null);
+        log(`✔ رُفعت الصورة ${path}`, 'ok');
+      }
+    }
+
+    // 2) تحديث data.js
+    const arrayName = currentType === '3d' ? 'PRODUCTS_3D' : 'WEB_PROJECTS';
+    const existing = await getFile(s.dataPath);
+    if (!existing) throw new Error(`لم يُعثر على ${s.dataPath}`);
+    const updated = injectProject(existing.content, arrayName, built.obj);
+    await putText(s.dataPath, updated, `Add project: ${built.obj.name}`);
+    log(`✔ حُدّث ${s.dataPath}`, 'ok');
+
+    log('🎉 اكتمل النشر بنجاح!', 'ok');
+    $('#result').innerHTML = `
+      <h4><i class="fas fa-check-circle"></i> تم النشر بنجاح</h4>
+      <p>خلال دقيقة سيظهر المشروع على الموقع تلقائياً. اضغط للمعاينة:</p>
+      <a class="btn btn-primary" href="./" target="_blank" rel="noopener">
+        <i class="fas fa-eye"></i> افتح الموقع
+      </a>
+    `;
+    $('#result').classList.add('is-open');
+    toast('تم النشر بنجاح 🎉', 'ok');
+  } catch (e) {
+    log('✘ ' + e.message, 'err');
+    toast('خطأ: ' + e.message, 'err');
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+/* =========================================================
+   Download ZIP
+   ========================================================= */
+$('#zipBtn').addEventListener('click', async () => {
+  const btn = $('#zipBtn');
+  btn.disabled = true;
+  try {
+    let built;
+    if (currentType === '3d') built = buildProject3D();
+    else built = buildProjectWeb();
+
+    const zip = new JSZip();
+
+    // إضافة الصور
+    if (currentType === '3d' && images3d.length) {
+      images3d.forEach((im) => {
+        zip.file(`assets/3d/${built.obj.id}/${im.name}`, im.blob);
+      });
+    }
+
+    // سنيبِت جاهز للصق في data.js
+    const arrayName = currentType === '3d' ? 'PRODUCTS_3D' : 'WEB_PROJECTS';
+    const snippet = `\n  ${JSON.stringify(built.obj, null, 2)
+      .split('\n').map((l, i) => i === 0 ? l : '  ' + l).join('\n')},\n`;
+    zip.file('snippet.txt',
+      `/* ألصق هذا السطر بعد "${arrayName} = [" في js/data.js */\n${snippet}`);
+
+    const blob = await zip.generateAsync({ type: 'blob' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${built.obj.id || 'project'}-package.zip`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('تم تحميل الحزمة ZIP', 'ok');
+  } catch (e) {
+    toast('خطأ: ' + e.message, 'err');
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+/* =========================================================
+   Init preview
+   ========================================================= */
+updatePreview();
+</script>
+</body>
+            </html>
