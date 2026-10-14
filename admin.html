@@ -63,7 +63,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 input,select,textarea{font-family:inherit;-webkit-appearance:none;appearance:none}
 img{max-width:100%;display:block}
 
-/* منع Zoom على iOS عند focus على input */
 @supports (-webkit-touch-callout:none){
   input,select,textarea{font-size:16px}
 }
@@ -709,7 +708,7 @@ img{max-width:100%;display:block}
 .toast.warn{background:var(--warn)}
 
 /* =========================================================
-   19. Backdrop (mobile sidebar)
+   19. Backdrop
    ========================================================= */
 .backdrop{
   display:none;
@@ -723,15 +722,10 @@ img{max-width:100%;display:block}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
 /* =========================================================
-   20. Responsive Breakpoints
+   20. Responsive
    ========================================================= */
+@media (max-width:1400px){.main{max-width:100%}}
 
-/* === Large Laptop (1200-1400px) — ضبط بسيط === */
-@media (max-width:1400px){
-  .main{max-width:100%}
-}
-
-/* === Laptop (1024-1200px) — تصغير الحواف === */
 @media (max-width:1200px){
   :root{--sidebar-w:230px}
   .main{padding:22px 22px 60px}
@@ -739,183 +733,83 @@ img{max-width:100%;display:block}
   .btn{padding:9px 13px;font-size:12px}
 }
 
-/* === Tablet (768-1024px) — الشريط الجانبي يصبح Drawer === */
 @media (max-width:1024px){
-  body{
-    grid-template-columns:1fr;
-    grid-template-areas:"top" "main";
-  }
-  .sb{
-    position:fixed;
-    top:0;
-    right:calc(-1 * var(--sidebar-w));
-    width:var(--sidebar-w);
-    height:100vh;
-    height:100dvh;
-    z-index:100;
-    transition:right .3s var(--ease);
-    box-shadow:none;
-  }
-  .sb.is-open{
-    right:0;
-    box-shadow:-20px 0 40px -10px rgba(0,0,0,.35);
-  }
+  body{grid-template-columns:1fr;grid-template-areas:"top" "main"}
+  .sb{position:fixed;top:0;right:calc(-1 * var(--sidebar-w));width:var(--sidebar-w);height:100vh;height:100dvh;z-index:100;transition:right .3s var(--ease);box-shadow:none}
+  .sb.is-open{right:0;box-shadow:-20px 0 40px -10px rgba(0,0,0,.35)}
   .sb-close{display:grid;place-items:center}
   .menu-btn{display:grid;place-items:center}
-
-  /* الرئيسية */
   .main{padding:20px 18px 60px}
   .top{padding:0 14px}
-
-  /* شبكة الإحصائيات */
   .stats{grid-template-columns:repeat(2,1fr)}
 }
 
-/* === Small Tablet / Large Phone (560-768px) === */
 @media (max-width:768px){
   .main{padding:16px 14px 50px}
   .card{padding:18px;margin-bottom:14px;border-radius:12px}
   .card-h{margin-bottom:14px;padding-bottom:10px}
   .card-h h3{font-size:13.5px}
-
   .sec-title{font-size:17px}
   .sec-desc{font-size:12.5px;margin-bottom:16px}
-
-  /* Hero actions تتكدس */
   [style*="display:flex"][style*="flex-wrap:wrap"]{gap:6px !important}
-
-  /* الجداول تصبح عمود واحد */
   .row-2,.row-3{grid-template-columns:1fr;gap:10px}
-
-  /* Stats */
   .stats{grid-template-columns:repeat(2,1fr);gap:10px}
   .stat{padding:14px 15px}
   .stat .ic{width:38px;height:38px;font-size:15px}
   .stat .num{font-size:20px}
-
-  /* Items */
   .item{padding:10px;gap:10px}
   .item .thumb{width:46px;height:46px}
   .item .actions{gap:4px}
-
-  /* Drop */
   .drop{padding:18px}
-
-  /* Thumbs */
   .thumbs{grid-template-columns:repeat(auto-fill,minmax(80px,1fr))}
-
-  /* Block editor */
   .block-editor-h{flex-direction:column;align-items:stretch}
   .block-editor-h input,
   .block-editor-h select{width:100%}
   .block-editor-h .rm-btn{align-self:flex-end}
-
-  /* Modal */
   .modal{padding:0}
-  .modal-box{
-    width:100%;
-    height:100%;
-    max-height:100vh;
-    max-height:100dvh;
-    border-radius:0;
-  }
+  .modal-box{width:100%;height:100%;max-height:100vh;max-height:100dvh;border-radius:0}
   .modal-h,.modal-f{border-radius:0}
 }
 
-/* === Phone (<560px) === */
 @media (max-width:560px){
   :root{--top-h:56px;--sidebar-w:min(280px,85vw)}
   body{font-size:13.5px}
-
   .main{padding:14px 12px 50px}
   .card{padding:16px 14px;border-radius:12px;margin-bottom:12px}
   .sec-title{font-size:16px;gap:8px}
   .sec-desc{font-size:12px}
-
-  /* Top bar */
   .top{padding:0 10px;gap:8px}
   .page-title{font-size:13.5px}
   .pill{padding:3px 9px;font-size:10px}
-
-  /* الأزرار العلوية — أيقونة فقط */
-  .top-actions .btn{
-    padding:0;
-    width:38px;height:38px;
-    min-height:38px;
-    border-radius:10px;
-  }
+  .top-actions .btn{padding:0;width:38px;height:38px;min-height:38px;border-radius:10px}
   .top-actions .btn span,
   .top-actions .btn .txt{display:none}
   .top-actions .btn i{font-size:14px}
-
-  /* Stats — عمود واحد */
   .stats{grid-template-columns:1fr;gap:8px}
   .stat{padding:13px 14px;gap:11px}
   .stat .num{font-size:19px}
   .stat .lbl{font-size:11px}
-
-  /* Items — الأزرار تحت */
-  .item{
-    flex-wrap:wrap;
-    padding:11px;
-    gap:10px;
-  }
-  .item .info{
-    flex:1 1 calc(100% - 60px);
-    min-width:0;
-  }
-  .item .actions{
-    flex:1 1 100%;
-    justify-content:flex-end;
-    padding-top:8px;
-    border-top:1px dashed var(--line);
-    margin-top:2px;
-  }
-  .item .actions .btn-xs{
-    width:34px;height:34px;
-    border-radius:8px;
-  }
-
-  /* Order item — الأزرار تحت */
-  .order-item{
-    flex-wrap:wrap;
-    padding:12px;
-  }
+  .item{flex-wrap:wrap;padding:11px;gap:10px}
+  .item .info{flex:1 1 calc(100% - 60px);min-width:0}
+  .item .actions{flex:1 1 100%;justify-content:flex-end;padding-top:8px;border-top:1px dashed var(--line);margin-top:2px}
+  .item .actions .btn-xs{width:34px;height:34px;border-radius:8px}
+  .order-item{flex-wrap:wrap;padding:12px}
   .order-item .lbl{flex:1 1 calc(100% - 50px);font-size:13px}
-  .order-item .arrows{
-    flex:1 1 100%;
-    justify-content:flex-end;
-    padding-top:8px;
-    border-top:1px dashed var(--line);
-  }
+  .order-item .arrows{flex:1 1 100%;justify-content:flex-end;padding-top:8px;border-top:1px dashed var(--line)}
   .order-item .arrows button{width:36px;height:36px}
-
-  /* List editors */
   .le-row{padding:7px;grid-template-columns:1fr!important;gap:6px}
   .le-row .rm-btn{justify-self:end}
-
-  /* Block editor rows */
-  .block-item-row{
-    grid-template-columns:1fr!important;
-    padding:8px;gap:6px;
-  }
+  .block-item-row{grid-template-columns:1fr!important;padding:8px;gap:6px}
   .block-item-row .rm-btn{justify-self:end}
-
-  /* Drop */
   .drop{padding:16px}
   .drop i{font-size:20px}
   .drop strong{font-size:12px}
   .drop small{font-size:10.5px}
-
-  /* Thumbs */
   .thumbs{grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:6px}
-
-  /* Buttons in card-h actions */
   .card-h .actions{width:100%;margin-top:8px}
   .card-h .actions .btn{flex:1}
 }
 
-/* === Very small (<400px) === */
 @media (max-width:400px){
   .main{padding:12px 10px 50px}
   .card{padding:14px 12px}
@@ -930,13 +824,11 @@ img{max-width:100%;display:block}
   .top-actions .btn{width:34px;height:34px;min-height:34px}
 }
 
-/* === Landscape phones — منع مشاكل الارتفاع === */
 @media (max-height:500px) and (orientation:landscape){
   .modal-box{max-height:100vh;max-height:100dvh}
   .modal-b{padding:14px}
 }
 
-/* === Print — إخفاء العناصر === */
 @media print{
   .sb,.top,.toast,.backdrop,.modal{display:none!important}
   body{display:block;background:#fff}
@@ -946,7 +838,6 @@ img{max-width:100%;display:block}
 </head>
 <body>
 
-<!-- ================= Sidebar ================= -->
 <aside class="sb" id="sb">
   <div class="sb-brand">
     <div class="mark">A</div>
@@ -993,7 +884,6 @@ img{max-width:100%;display:block}
 </aside>
 <div class="backdrop" id="backdrop"></div>
 
-<!-- ================= Top bar ================= -->
 <header class="top">
   <div class="top-left">
     <button class="menu-btn" id="menuBtn" aria-label="القائمة"><i class="fas fa-bars"></i></button>
@@ -1013,10 +903,8 @@ img{max-width:100%;display:block}
   </div>
 </header>
 
-<!-- ================= Main ================= -->
 <main class="main" id="main"></main>
 
-<!-- ================= Modal ================= -->
 <div class="modal" id="modal">
   <div class="modal-bg" data-close></div>
   <div class="modal-box">
@@ -1049,6 +937,7 @@ const S = {
   dirty: false,
   section: 'dashboard',
   pendingImages: [],
+  uploadQueue: [],
   editingCtx: null
 };
 
@@ -1086,9 +975,11 @@ function log(msg, type='info') {
 
 function markDirty() {
   S.dirty = true;
+  const qc = S.uploadQueue.length;
+  const label = qc > 0 ? `تغييرات + ${qc} صورة للرفع` : 'تغييرات غير منشورة';
   $('#statusPill').className = 'pill dirty';
-  $('#statusPill').innerHTML = '<span class="dot"></span> تغييرات غير منشورة';
-  $('#sb-status').textContent = '● تغييرات معلّقة';
+  $('#statusPill').innerHTML = `<span class="dot"></span> ${label}`;
+  $('#sb-status').textContent = `● ${label}`;
 }
 function markSaved() {
   S.dirty = false;
@@ -1201,7 +1092,7 @@ function blobToBase64(blob) {
 }
 
 /* =========================================================
-   Publish
+   Publish — يرفع الصور من uploadQueue ثم يحدّث data.js
    ========================================================= */
 async function publish() {
   const btn = $('#publishBtn');
@@ -1209,17 +1100,33 @@ async function publish() {
   $('#log').innerHTML = '';
   try {
     log('بدء النشر...', 'info');
-    for (const im of S.pendingImages) {
-      log(`رفع ${im.path} (${fmtB(im.size)})...`, 'info');
-      await uploadFile(im.path, im.blob, `Upload ${im.path}`);
-      log(`✔ ${im.path}`, 'ok');
-    }
-    S.pendingImages = [];
 
+    // 1) ارفع كل الصور من طابور الرفع
+    if (S.uploadQueue.length) {
+      log(`⏫ رفع ${S.uploadQueue.length} صورة...`, 'info');
+      const failed = [];
+      for (const im of S.uploadQueue) {
+        try {
+          log(`↑ ${im.path} (${fmtB(im.size)})`, 'info');
+          await uploadFile(im.path, im.blob, `Upload ${im.path}`);
+          log(`✔ تم رفع ${im.path}`, 'ok');
+        } catch (err) {
+          log(`✘ فشل ${im.path}: ${err.message}`, 'err');
+          failed.push(im);
+        }
+      }
+      S.uploadQueue = failed;
+      if (failed.length) throw new Error(`فشل رفع ${failed.length} صورة — راجع السجل`);
+    } else {
+      log('لا توجد صور جديدة للرفع', 'info');
+    }
+
+    // 2) حدّث data.js
     log('تحديث data.js...', 'info');
     await publishDataJS();
     log('✔ تم تحديث data.js', 'ok');
 
+    // 3) أعِد جلب sha
     await fetchData();
 
     markSaved();
@@ -1301,6 +1208,7 @@ function updateBadges() {
    ========================================================= */
 function renderDashboard() {
   const d = S.data;
+  const qc = S.uploadQueue.length;
   return `
     <h1 class="sec-title"><i class="fas fa-home"></i> مرحباً بك</h1>
     <p class="sec-desc">تحكم كامل في البورتفوليو — كل تعديل يُحفظ في المتصفح حتى تنشر.</p>
@@ -1310,11 +1218,17 @@ function renderDashboard() {
         <div class="info"><div class="num">${d.PRODUCTS_3D.length}</div><div class="lbl">منتج 3D</div></div></div>
       <div class="stat"><div class="ic purple"><i class="fas fa-code"></i></div>
         <div class="info"><div class="num">${d.WEB_PROJECTS.length}</div><div class="lbl">مشروع ويب</div></div></div>
-      <div class="stat"><div class="ic green"><i class="fas fa-tags"></i></div>
-        <div class="info"><div class="num">${(d.SITE.categories3d||[]).length + (d.SITE.categoriesWeb||[]).length}</div><div class="lbl">صنف</div></div></div>
+      <div class="stat"><div class="ic ${qc?'orange':'green'}"><i class="fas fa-images"></i></div>
+        <div class="info"><div class="num">${qc}</div><div class="lbl">صورة بانتظار الرفع</div></div></div>
       <div class="stat"><div class="ic ${S.dirty?'orange':'green'}"><i class="fas fa-${S.dirty?'pencil':'check'}"></i></div>
         <div class="info"><div class="num">${S.dirty?'!':'✓'}</div><div class="lbl">${S.dirty?'تغييرات معلّقة':'محفوظ'}</div></div></div>
     </div>
+
+    ${qc ? `
+    <div class="card" style="background:#fef3c7;border-color:#fcd34d;color:#92400e">
+      <strong><i class="fas fa-triangle-exclamation"></i> لديك ${qc} صورة بانتظار الرفع</strong>
+      <p style="margin-top:6px;font-size:13px">اضغط زر <strong>نشر</strong> في الأعلى لرفعها وإنشاء المجلدات تلقائياً على GitHub.</p>
+    </div>` : ''}
 
     <div class="card">
       <div class="card-h"><h3><i class="fas fa-bolt"></i> إجراءات سريعة</h3></div>
@@ -1334,7 +1248,7 @@ function renderDashboard() {
         <li>عدّل أي قسم — تظهر حالة <strong>تغييرات غير منشورة</strong>.</li>
         <li>أضف منتجاتك ومشاريعك (مع صورها).</li>
         <li>اضغط <strong>نشر</strong> في الأعلى.</li>
-        <li>الصور تُضغط تلقائياً وتُرفع، و data.js يُحدَّث في commit واحد.</li>
+        <li>الصور تُضغط تلقائياً وتُرفع إلى <code>assets/3d/[slug]/</code>، و data.js يُحدَّث في نفس الوقت.</li>
         <li>بعد 1-2 دقيقة يظهر كل شيء على موقعك.</li>
       </ol>
     </div>
@@ -2277,6 +2191,19 @@ function open3D(idx) {
     if (isNew) S.data.PRODUCTS_3D.unshift(obj);
     else S.data.PRODUCTS_3D[idx] = obj;
 
+    // ⭐ الأهم: نقل الصور إلى طابور الرفع الدائم
+    let added = 0;
+    S.pendingImages.forEach((im) => {
+      S.uploadQueue.push({
+        blob: im.blob,
+        path: `assets/3d/${id}/${im.name}`,
+        name: im.name,
+        size: im.size
+      });
+      added++;
+    });
+    if (added) log(`📦 أُضيفت ${added} صورة إلى طابور الرفع — ستُرفع عند النشر`, 'info');
+
     markDirty();
     updateBadges();
     closeModal();
@@ -2400,7 +2327,6 @@ $('#reloadBtn').addEventListener('click', async () => {
 window.addEventListener('beforeunload', e => {
   if (S.dirty) { e.preventDefault(); e.returnValue = ''; }
 });
-// إغلاق الـ sidebar تلقائياً عند تكبير الشاشة
 window.addEventListener('resize', () => {
   if (!isMobileDrawer()) closeSidebar();
 });
@@ -2431,4 +2357,4 @@ async function boot() {
 boot();
 </script>
 </body>
-  </html>
+</html>
