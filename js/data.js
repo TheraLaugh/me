@@ -1,6 +1,6 @@
 /* =========================================================
    Portfolio Data — يُدار عبر admin.html
-   آخر تحديث: 2026-10-14T08:33:58.938Z
+   آخر تحديث: 2026-10-14T08:37:49.380Z
    ========================================================= */
 
 window.SITE = {
@@ -239,6 +239,31 @@ window.WEB_PROJECTS = [
     "private": true
   },
   {
+    "id": "kids-center",
+    "name": "نظام إدارة مراكز الأطفال",
+    "subtitle": "نظام إداري احترافي",
+    "icon": "fa-child",
+    "category": "fullstack",
+    "tech": [
+      "PHP",
+      "MySQL",
+      "JavaScript",
+      "Excel / PDF"
+    ],
+    "desc": "نظام إداري كامل لإدارة المركز والموظفين مع تقارير مالية.",
+    "bullets": [
+      "إحصائيات يومية وشهرية للأطفال والإيرادات وصافي الأرباح.",
+      "نظام صلاحيات (أداري ينشئ حسابات للموظفين).",
+      "مقارنة الأشهر، تصدير تقارير Excel و PDF.",
+      "قابل لإعادة الاستخدام كنموذج اشتراك شهري (SaaS) للمراكز الأخرى."
+    ],
+    "links": {
+      "github": null,
+      "demo": null
+    },
+    "private": true
+  },
+  {
     "id": "therawork",
     "name": "TheraWork",
     "subtitle": "نظام إدارة المواعيد",
@@ -283,31 +308,6 @@ window.WEB_PROJECTS = [
       "github": "https://github.com/TheraLaugh",
       "demo": "https://theralaugh.kesug.com"
     }
-  },
-  {
-    "id": "kids-center",
-    "name": "نظام إدارة مراكز الأطفال",
-    "subtitle": "نظام إداري احترافي",
-    "icon": "fa-child",
-    "category": "fullstack",
-    "tech": [
-      "PHP",
-      "MySQL",
-      "JavaScript",
-      "Excel / PDF"
-    ],
-    "desc": "نظام إداري كامل لإدارة المركز والموظفين مع تقارير مالية.",
-    "bullets": [
-      "إحصائيات يومية وشهرية للأطفال والإيرادات وصافي الأرباح.",
-      "نظام صلاحيات (أداري ينشئ حسابات للموظفين).",
-      "مقارنة الأشهر، تصدير تقارير Excel و PDF.",
-      "قابل لإعادة الاستخدام كنموذج اشتراك شهري (SaaS) للمراكز الأخرى."
-    ],
-    "links": {
-      "github": null,
-      "demo": null
-    },
-    "private": true
   },
   {
     "id": "theraqr",
