@@ -499,8 +499,46 @@ img{max-width:100%;display:block}
   font-size:9px;display:grid;place-items:center;
   opacity:0;transition:opacity .2s;
 }
+.thumb-box .info-tag{
+  position:absolute;bottom:0;right:0;left:0;
+  background:linear-gradient(to top,rgba(10,22,40,.92),transparent);
+  color:#fff;font-size:9px;padding:10px 6px 5px;
+  text-align:center;font-weight:700;letter-spacing:.2px;
+}
 .thumb-box:hover .rm,
 .thumb-box:hover .mv{opacity:1}
+
+/* =========================================================
+   12b. Resolution Selector
+   ========================================================= */
+.res-wrap{margin-bottom:10px}
+.res-label{
+  font-size:11.5px;font-weight:800;color:var(--ink-soft);
+  margin-bottom:6px;display:flex;align-items:center;gap:6px;
+}
+.res-label i{color:var(--blue);font-size:12px}
+.res-selector{display:flex;gap:6px;flex-wrap:wrap}
+.res-btn{
+  padding:8px 14px;border-radius:20px;
+  border:1.5px solid var(--line);
+  background:#fafbfc;
+  font-size:11.5px;font-weight:700;color:var(--muted);
+  transition:all .2s var(--ease);
+  display:inline-flex;align-items:center;gap:5px;
+  cursor:pointer;font-family:inherit;
+}
+.res-btn i{font-size:10px}
+.res-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-soft)}
+.res-btn.is-active{
+  background:var(--blue);color:#fff;border-color:var(--blue);
+  box-shadow:0 4px 10px -4px rgba(10,102,194,.5);
+}
+.res-note{
+  font-size:11px;color:var(--muted);margin-top:8px;
+  padding:7px 11px;background:#f8fafc;border-radius:8px;
+  border-right:3px solid var(--blue);line-height:1.6;
+}
+.res-note strong{color:var(--ink-soft)}
 
 /* =========================================================
    13. List Editors
@@ -769,6 +807,8 @@ img{max-width:100%;display:block}
   .modal{padding:0}
   .modal-box{width:100%;height:100%;max-height:100vh;max-height:100dvh;border-radius:0}
   .modal-h,.modal-f{border-radius:0}
+  .res-selector{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}
+  .res-btn{flex-shrink:0}
 }
 
 @media (max-width:560px){
@@ -938,7 +978,8 @@ const S = {
   section: 'dashboard',
   pendingImages: [],
   uploadQueue: [],
-  editingCtx: null
+  editingCtx: null,
+  resolution: '1600'
 };
 
 /* =========================================================
@@ -1063,11 +1104,38 @@ window.WEB_PROJECTS = ${JSON.stringify(d.WEB_PROJECTS, null, 2)};
 `;
 }
 
+/* ---------- uploadFile — يدعم الرفع الجديد والتحديث ---------- */
 async function uploadFile(path, blob, message) {
   const b64 = await blobToBase64(blob);
+
+  // حاول جلب sha إن كان الملف موجوداً مسبقاً
+  let existingSha = null;
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${S.settings.owner}/${S.settings.repo}/contents/${path}?ref=${S.settings.branch}`,
+      {
+        headers: {
+          'Authorization': `token ${S.settings.token}`,
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      }
+    );
+    if (res.ok) {
+      const existing = await res.json();
+      existingSha = existing.sha;
+    }
+  } catch (e) { /* الملف غير موجود — تجاهل */ }
+
+  const payload = {
+    message,
+    content: b64,
+    branch: S.settings.branch
+  };
+  if (existingSha) payload.sha = existingSha;
+
   return gh(path, {
     method: 'PUT',
-    body: JSON.stringify({ message, content: b64, branch: S.settings.branch })
+    body: JSON.stringify(payload)
   });
 }
 
@@ -1092,7 +1160,7 @@ function blobToBase64(blob) {
 }
 
 /* =========================================================
-   Publish — يرفع الصور من uploadQueue ثم يحدّث data.js
+   Publish
    ========================================================= */
 async function publish() {
   const btn = $('#publishBtn');
@@ -1101,7 +1169,6 @@ async function publish() {
   try {
     log('بدء النشر...', 'info');
 
-    // 1) ارفع كل الصور من طابور الرفع
     if (S.uploadQueue.length) {
       log(`⏫ رفع ${S.uploadQueue.length} صورة...`, 'info');
       const failed = [];
@@ -1121,12 +1188,10 @@ async function publish() {
       log('لا توجد صور جديدة للرفع', 'info');
     }
 
-    // 2) حدّث data.js
     log('تحديث data.js...', 'info');
     await publishDataJS();
     log('✔ تم تحديث data.js', 'ok');
 
-    // 3) أعِد جلب sha
     await fetchData();
 
     markSaved();
@@ -1142,25 +1207,43 @@ async function publish() {
 }
 
 /* =========================================================
-   Image processing
+   Image processing — يدعم الدقة الأصلية والمحددة
    ========================================================= */
-function processImage(file, maxSize = 1600, q = 0.85) {
+function processImage(file, resolution) {
   return new Promise((res, rej) => {
     const img = new Image();
     const url = URL.createObjectURL(file);
     img.onload = () => {
+      const originalW = img.width;
+      const originalH = img.height;
       let { width, height } = img;
-      if (width > maxSize || height > maxSize) {
-        const r = Math.min(maxSize/width, maxSize/height);
-        width = Math.round(width*r); height = Math.round(height*r);
+      let quality = 0.85;
+
+      if (resolution === 'original') {
+        quality = 0.95;
+      } else {
+        const maxSize = +resolution;
+        if (width > maxSize || height > maxSize) {
+          const r = Math.min(maxSize/width, maxSize/height);
+          width = Math.round(width*r);
+          height = Math.round(height*r);
+        }
+        quality = maxSize >= 2400 ? 0.92 : 0.85;
       }
+
       const c = document.createElement('canvas');
       c.width = width; c.height = height;
       c.getContext('2d').drawImage(img, 0, 0, width, height);
       c.toBlob(b => {
         URL.revokeObjectURL(url);
-        res({ blob: b, width, height, size: b.size });
-      }, 'image/jpeg', q);
+        res({
+          blob: b,
+          width, height,
+          originalW, originalH,
+          size: b.size,
+          originalSize: file.size
+        });
+      }, 'image/jpeg', quality);
     };
     img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('فشل تحميل الصورة')); };
     img.src = url;
@@ -1246,7 +1329,7 @@ function renderDashboard() {
       <div class="card-h"><h3><i class="fas fa-circle-info"></i> كيف يعمل النظام</h3></div>
       <ol style="padding-right:20px;font-size:13px;line-height:2;color:var(--ink-soft)">
         <li>عدّل أي قسم — تظهر حالة <strong>تغييرات غير منشورة</strong>.</li>
-        <li>أضف منتجاتك ومشاريعك (مع صورها).</li>
+        <li>أضف منتجاتك ومشاريعك (مع صورها) واختر الدقة المناسبة.</li>
         <li>اضغط <strong>نشر</strong> في الأعلى.</li>
         <li>الصور تُضغط تلقائياً وتُرفع إلى <code>assets/3d/[slug]/</code>، و data.js يُحدَّث في نفس الوقت.</li>
         <li>بعد 1-2 دقيقة يظهر كل شيء على موقعك.</li>
@@ -2087,11 +2170,39 @@ function open3D(idx) {
     </div>
     <div class="field"><label>تفاصيل تقنية (سطر لكل نقطة)</label><textarea id="e-det" style="min-height:90px">${esc((p.details||[]).join('\n'))}</textarea></div>
 
-    <div class="field"><label>الصور</label>
+    <div class="field">
+      <label>الصور</label>
+
+      <div class="res-wrap">
+        <div class="res-label"><i class="fas fa-expand"></i> اختر دقة الصور قبل الرفع:</div>
+        <div class="res-selector" id="e-res-selector">
+          <button type="button" class="res-btn ${S.resolution==='original'?'is-active':''}" data-res="original">
+            <i class="fas fa-image"></i> الأصلية
+          </button>
+          <button type="button" class="res-btn ${S.resolution==='2400'?'is-active':''}" data-res="2400">
+            <i class="fas fa-star"></i> 2400px
+          </button>
+          <button type="button" class="res-btn ${S.resolution==='1600'?'is-active':''}" data-res="1600">
+            <i class="fas fa-check"></i> 1600px
+          </button>
+          <button type="button" class="res-btn ${S.resolution==='1200'?'is-active':''}" data-res="1200">
+            1200px
+          </button>
+          <button type="button" class="res-btn ${S.resolution==='800'?'is-active':''}" data-res="800">
+            800px
+          </button>
+        </div>
+        <div class="res-note" id="e-res-note">
+          ${S.resolution==='original'
+            ? '<strong>الأصلية:</strong> بلا تصغير الأبعاد · جودة 95% — مناسبة لصور الرندر عالية الدقة.'
+            : `<strong>${S.resolution}px:</strong> أقصى بُعد ${S.resolution}px · جودة ${+S.resolution>=2400?'92':'85'}% — توازن بين الجودة والحجم.`}
+        </div>
+      </div>
+
       <div class="drop" id="e-drop">
         <i class="fas fa-cloud-arrow-up"></i>
         <strong>اسحب الصور أو اضغط</strong>
-        <small>الصورة الأولى = الغلاف · تُضغط تلقائياً إلى 1600px</small>
+        <small>الصورة الأولى = الغلاف · تُضغط حسب الدقة المختارة</small>
         <input type="file" id="e-file" accept="image/*" multiple hidden />
       </div>
       <div class="thumbs" id="e-thumbs"></div>
@@ -2123,7 +2234,11 @@ function open3D(idx) {
     S.pendingImages.forEach((im) => {
       const d = document.createElement('div');
       d.className = 'thumb-box';
-      d.innerHTML = `<img src="${im.previewURL}" /><span class="badge new">جديد</span>`;
+      d.innerHTML = `
+        <img src="${im.previewURL}" />
+        <span class="badge new">جديد</span>
+        <span class="info-tag">${im.width}×${im.height} · ${fmtB(im.size)}</span>
+      `;
       c.appendChild(d);
     });
     c.querySelectorAll('.rm').forEach(b => b.addEventListener('click', () => {
@@ -2136,21 +2251,50 @@ function open3D(idx) {
     }));
   }
 
+  // أزرار اختيار الدقة
+  $$('#e-res-selector .res-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      $$('#e-res-selector .res-btn').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      S.resolution = btn.dataset.res;
+      const note = $('#e-res-note');
+      if (note) {
+        note.innerHTML = S.resolution === 'original'
+          ? '<strong>الأصلية:</strong> بلا تصغير الأبعاد · جودة 95% — مناسبة لصور الرندر عالية الدقة.'
+          : `<strong>${S.resolution}px:</strong> أقصى بُعد ${S.resolution}px · جودة ${+S.resolution>=2400?'92':'85'}% — توازن بين الجودة والحجم.`;
+      }
+    });
+  });
+
   $('#e-drop').addEventListener('click', () => $('#e-file').click());
   $('#e-file').addEventListener('change', async (e) => {
     for (const f of e.target.files) {
       try {
-        const { blob, size } = await processImage(f);
+        const result = await processImage(f, S.resolution);
         const idNow = ($('#e-id').value.trim()) || slugify($('#e-name').value) || 'project-'+Date.now();
         const pos = existing.length + S.pendingImages.length;
         const name = pos === 0 ? 'cover.jpg' : `view-${pos}.jpg`;
         S.pendingImages.push({
-          blob, size, name,
+          blob: result.blob,
+          size: result.size,
+          width: result.width,
+          height: result.height,
+          originalW: result.originalW,
+          originalH: result.originalH,
+          originalSize: result.originalSize,
+          name,
           path: `assets/3d/${idNow}/${name}`,
-          previewURL: URL.createObjectURL(blob)
+          previewURL: URL.createObjectURL(result.blob)
         });
         renderThumbs();
-        log(`✔ ${f.name} → ${name} (${fmtB(size)})`, 'ok');
+        const dims = result.originalW === result.width && result.originalH === result.height
+          ? `${result.width}×${result.height} (بدون تغيير)`
+          : `${result.originalW}×${result.originalH} → ${result.width}×${result.height}`;
+        const saved = result.originalSize > 0
+          ? ` · ${fmtB(result.originalSize)} ← ${fmtB(result.size)}`
+          : '';
+        log(`✔ ${f.name} → ${name} · ${dims}${saved}`, 'ok');
       } catch (err) { log('✘ ' + err.message, 'err'); }
     }
   });
@@ -2191,7 +2335,6 @@ function open3D(idx) {
     if (isNew) S.data.PRODUCTS_3D.unshift(obj);
     else S.data.PRODUCTS_3D[idx] = obj;
 
-    // ⭐ الأهم: نقل الصور إلى طابور الرفع الدائم
     let added = 0;
     S.pendingImages.forEach((im) => {
       S.uploadQueue.push({
