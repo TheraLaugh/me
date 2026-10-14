@@ -1,6 +1,6 @@
 /* =========================================================
    Portfolio Data — يُدار عبر admin.html
-   آخر تحديث: 2026-10-14T10:24:07.164Z
+   آخر تحديث: 2026-10-14T10:24:48.191Z
    ========================================================= */
 
 window.SITE = {
@@ -12,8 +12,8 @@ window.SITE = {
     "brandSub": "ZAID QADDAH"
   },
   "order": [
-    "about",
     "hero",
+    "about",
     "products3d",
     "webProjects",
     "contact"
