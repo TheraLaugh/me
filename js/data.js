@@ -1,6 +1,6 @@
 /* =========================================================
    Portfolio Data — يُدار عبر admin.html
-   آخر تحديث: 2026-10-14T14:05:08.672Z
+   آخر تحديث: 2026-10-14T17:07:23.520Z
    ========================================================= */
 
 window.SITE = {
@@ -423,28 +423,6 @@ window.WEB_PROJECTS = [
       "حسابات إحصائية متعددة.",
       "واجهة بسيطة وواضحة.",
       "نتائج فورية."
-    ],
-    "links": {
-      "github": "https://github.com/TheraLaugh",
-      "demo": null
-    }
-  },
-  {
-    "id": "playhour",
-    "name": "PlayHour",
-    "subtitle": "تطبيق تفاعلي",
-    "icon": "fa-gamepad",
-    "category": "tools",
-    "tech": [
-      "HTML",
-      "CSS",
-      "JavaScript"
-    ],
-    "desc": "تطبيق تفاعلي خفيف للمتعة والترفيه.",
-    "bullets": [
-      "واجهة بسيطة وجذابة.",
-      "يعمل على جميع الأجهزة.",
-      "سريع وخفيف."
     ],
     "links": {
       "github": "https://github.com/TheraLaugh",
