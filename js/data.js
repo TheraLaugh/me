@@ -1,6 +1,6 @@
 /* =========================================================
    Portfolio Data — يُدار عبر admin.html
-   آخر تحديث: 2026-10-14T13:54:09.792Z
+   آخر تحديث: 2026-10-14T14:03:59.687Z
    ========================================================= */
 
 window.SITE = {
@@ -212,7 +212,7 @@ window.PRODUCTS_3D = [
     "id": "maono-dm30-3d-model-render",
     "name": "Maono DM30",
     "category": "product",
-    "tag": "Blender",
+    "tag": "مايكروفون",
     "cover": "assets/3d/maono-dm30-3d-model-render/cover.jpg",
     "gallery": [
       "assets/3d/maono-dm30-3d-model-render/cover.jpg"
@@ -237,8 +237,8 @@ window.PRODUCTS_3D = [
     ]
   },
   {
-    "id": "PERFUME",
-    "name": "ZAID PERFUM",
+    "id": "Valentino-Uomo-3d-model-render",
+    "name": "Valentino Uomo",
     "category": "perfume",
     "tag": "زجاج",
     "cover": "assets/3d/PERFUME/cover.jpg",
