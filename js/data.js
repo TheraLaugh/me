@@ -1,6 +1,6 @@
 /* =========================================================
    Portfolio Data — يُدار عبر admin.html
-   آخر تحديث: 2026-11-12T15:36:59.853Z
+   آخر تحديث: 2026-10-23T22:02:07.746Z
    ========================================================= */
 
 window.SITE = {
@@ -208,244 +208,259 @@ window.SITE = {
       "id": "tools",
       "label": "أدوات"
     }
-  ],
-  "branding": {
-    "primaryColor": "#0a66c2",
-    "accentColor": "#7c3aed",
-    "bgColor": "#f7fafd",
-    "textColor": "#0a1628",
-    "fontFamily": "Cairo",
-    "radius": 14,
-    "containerWidth": 1200
-  },
-  "slides": [],
-  "customButtons": [],
-  "categories": [
-    {
-      "id": "general",
-      "label": "عام"
-    }
   ]
 };
 
-window.SECTIONS = [
+window.PRODUCTS_3D = [
   {
-    "id": "legacy-3d",
-    "title": "منتجات 3D",
-    "icon": "fa-cube",
-    "type": "portfolio",
-    "layout": "grid",
-    "items": [
-      {
-        "id": "Valentino-Uomo-3d-model-render",
-        "title": "Valentino Uomo",
-        "subtitle": "زجاج",
-        "description": "عطر فاخر التصميم، زجاجي مزخرف، تم تصميمه بواسطة blender مع تصميم دقيق لاظهار تفاصيل المنتج، ثم مرحلة textures، ثم مرحلة render وتم فيه تصميم بيئة بسيطة جدا وهي حائط أحمر مع توجيه بقعة الضوء بشكل مكثيف على المنتج لابراز جمال المنتج وتفاصيله.",
-        "image": "assets/3d/PERFUME/cover.jpg",
-        "gallery": [
-          "assets/3d/PERFUME/cover.jpg"
-        ],
-        "category": "perfume",
-        "tags": [
-          "Blender"
-        ],
-        "meta": {
-          "render": "Cycles",
-          "polys": "",
-          "time": "يومان"
-        },
-        "links": {}
-      },
-      {
-        "id": "Procedural-Craft-Bottle-3d-model-render",
-        "title": "Procedural Craft Bottle",
-        "subtitle": "زجاج",
-        "description": "مشروع يبرز القدرة على بناء منتج واقعي بالكامل داخل بلندر دون أي نماذج جاهزة. تم تصميم الزجاجة، الإضاءة، المواد، والانعكاسات بشكل يدوي لإظهار التحكم الكامل في التفاصيل الدقيقة، وإثبات مهارة إنشاء منتجات قابلة للاستخدام في الإعلانات أو العروض التجارية.",
-        "image": "assets/3d/Procedural-Craft-Bottle-3d-model-render/cover.jpg",
-        "gallery": [
-          "assets/3d/Procedural-Craft-Bottle-3d-model-render/cover.jpg"
-        ],
-        "category": "perfume",
-        "tags": [
-          "Blender"
-        ],
-        "meta": {
-          "render": "cycles",
-          "polys": "",
-          "time": "يومان"
-        },
-        "links": {}
-      },
-      {
-        "id": "maono-dm30-3d-model-render",
-        "title": "Maono DM30",
-        "subtitle": "مايكروفون",
-        "description": "نموذج ثلاثي الأبعاد عالي الدقة لمايكروفون Maono DM30، تم تصميمه بالكامل داخل برنامج Blender مع المحافظة على الهوية البصرية للمايكروفون الأصلي. يتميّز النموذج بجسم أسطواني ناعم وشبكة معدنية أمامية، إضافة إلى إضاءة لونية واقعية تحاكي RGB الخاصة بالمنتج الحقيقي. النموذج مناسب لعرض المنتجات، المشاريع الإعلانية، أو استخدامه في بورتفوليو التصميم ثلاثي الأبعاد.",
-        "image": "assets/3d/maono-dm30-3d-model-render/cover.jpg",
-        "gallery": [
-          "assets/3d/maono-dm30-3d-model-render/cover.jpg"
-        ],
-        "category": "product",
-        "tags": [
-          "Blender"
-        ],
-        "meta": {
-          "render": "Cycles",
-          "polys": "",
-          "time": "3 أيام"
-        },
-        "links": {}
-      }
+    "id": "Valentino-Uomo-3d-model-render",
+    "name": "Valentino Uomo",
+    "category": "perfume",
+    "tag": "زجاج",
+    "cover": "assets/3d/PERFUME/cover.jpg",
+    "gallery": [
+      "assets/3d/PERFUME/cover.jpg"
+    ],
+    "short": "عطر فاخر التصميم، عطر زجاجي مزخرف",
+    "description": "عطر فاخر التصميم، زجاجي مزخرف، تم تصميمه بواسطة blender مع تصميم دقيق لاظهار تفاصيل المنتج، ثم مرحلة textures، ثم مرحلة render وتم فيه تصميم بيئة بسيطة جدا وهي حائط أحمر مع توجيه بقعة الضوء بشكل مكثيف على المنتج لابراز جمال المنتج وتفاصيله.",
+    "software": [
+      "Blender"
+    ],
+    "render": "Cycles",
+    "polys": "",
+    "time": "يومان",
+    "details": [
+      "استخدام IOR الخاصة بالزجاج 1.45.",
+      "مراعاة سماكة الزجاج.",
+      "مراعاة IOR المادة العطرية.",
+      "مراعاة تفاصيل المنتج البارزة.",
+      "مراعاة اللون الذهبي والIOR للذهب."
     ]
   },
   {
-    "id": "legacy-web",
-    "title": "مشاريع الويب",
-    "icon": "fa-code",
-    "type": "portfolio",
-    "layout": "grid",
-    "items": [
-      {
-        "id": "School Management System",
-        "title": "School Management System",
-        "subtitle": "نظام إدارة مدرسة",
-        "description": "تطبيق ويب متكامل بأدوار متعددة: الإدارة، المشرفون الأكاديميون، والمعلمون. يقدّم المعلمون خطط الدروس الأسبوعية مع شرح مفصّل ووسائل تعليمية، ويتلقى المشرفون إشعارات لتقييم المعلمين والجدول.",
-        "image": "",
-        "gallery": [],
-        "category": "fullstack",
-        "tags": [
-          "html",
-          "PHP",
-          "CSS",
-          "JAVASCRIPT",
-          "MYSQL"
-        ],
-        "meta": {},
-        "links": {
-          "github": null,
-          "demo": null
-        }
-      },
-      {
-        "id": "kids-center",
-        "title": "نظام إدارة مراكز الأطفال",
-        "subtitle": "نظام إداري احترافي",
-        "description": "نظام إداري كامل لإدارة المركز والموظفين مع تقارير مالية.",
-        "image": "",
-        "gallery": [],
-        "category": "fullstack",
-        "tags": [
-          "PHP",
-          "MySQL",
-          "JavaScript",
-          "Excel / PDF"
-        ],
-        "meta": {},
-        "links": {
-          "github": null,
-          "demo": null
-        }
-      },
-      {
-        "id": "therawork",
-        "title": "TheraWork",
-        "subtitle": "نظام إدارة المواعيد",
-        "description": "تطبيق ويب تفاعلي (SPA) لإدارة المواعيد مع كشف تلقائي للصراعات.",
-        "image": "",
-        "gallery": [],
-        "category": "frontend",
-        "tags": [
-          "HTML",
-          "CSS",
-          "JavaScript",
-          "Local Storage"
-        ],
-        "meta": {},
-        "links": {
-          "github": "https://github.com/TheraLaugh/TheraWork",
-          "demo": null
-        }
-      },
-      {
-        "id": "therafollowers",
-        "title": "TheraFollowers",
-        "subtitle": "منصة زيادة متابعين إنستغرام",
-        "description": "منصة متكاملة لإدارة طلبات المتابعة، بنظام حسابات وصلاحيات.",
-        "image": "",
-        "gallery": [],
-        "category": "fullstack",
-        "tags": [
-          "HTML",
-          "CSS",
-          "PHP",
-          "MySQL"
-        ],
-        "meta": {},
-        "links": {
-          "github": "https://github.com/TheraLaugh",
-          "demo": "https://theralaugh.kesug.com"
-        }
-      },
-      {
-        "id": "theraqr",
-        "title": "TheraQR",
-        "subtitle": "مولّد رموز QR",
-        "description": "أداة سريعة لتوليد رموز QR لأي نص أو رابط مع إمكانية التحميل.",
-        "image": "",
-        "gallery": [],
-        "category": "tools",
-        "tags": [
-          "HTML",
-          "CSS",
-          "JavaScript"
-        ],
-        "meta": {},
-        "links": {
-          "github": "https://github.com/TheraLaugh",
-          "demo": null
-        }
-      },
-      {
-        "id": "theragym",
-        "title": "TheraGYM",
-        "subtitle": "مساعد التمارين الرياضية",
-        "description": "تطبيق لتنظيم التمارين ومتابعة التقدم اليومي.",
-        "image": "",
-        "gallery": [],
-        "category": "tools",
-        "tags": [
-          "HTML",
-          "CSS",
-          "JavaScript"
-        ],
-        "meta": {},
-        "links": {
-          "github": "https://github.com/TheraLaugh",
-          "demo": null
-        }
-      },
-      {
-        "id": "therastat",
-        "title": "TheraStat",
-        "subtitle": "أدوات إحصائية",
-        "description": "مجموعة أدوات إحصائية بسيطة للمستخدم العربي.",
-        "image": "",
-        "gallery": [],
-        "category": "tools",
-        "tags": [
-          "HTML",
-          "CSS",
-          "JavaScript"
-        ],
-        "meta": {},
-        "links": {
-          "github": "https://github.com/TheraLaugh",
-          "demo": null
-        }
-      }
+    "id": "Procedural-Craft-Bottle-3d-model-render",
+    "name": "Procedural Craft Bottle",
+    "category": "perfume",
+    "tag": "زجاج",
+    "cover": "assets/3d/Procedural-Craft-Bottle-3d-model-render/cover.jpg",
+    "gallery": [
+      "assets/3d/Procedural-Craft-Bottle-3d-model-render/cover.jpg"
+    ],
+    "short": "زجاجة مصممة بالكامل داخل بلندر لإظهار قوة التصميم الواقعي من الصفر.",
+    "description": "مشروع يبرز القدرة على بناء منتج واقعي بالكامل داخل بلندر دون أي نماذج جاهزة. تم تصميم الزجاجة، الإضاءة، المواد، والانعكاسات بشكل يدوي لإظهار التحكم الكامل في التفاصيل الدقيقة، وإثبات مهارة إنشاء منتجات قابلة للاستخدام في الإعلانات أو العروض التجارية.",
+    "software": [
+      "Blender"
+    ],
+    "render": "cycles",
+    "polys": "",
+    "time": "يومان",
+    "details": [
+      "النموذج ثلاثي الأبعاد: تم إنشاؤه من الصفر باستخدام أدوات Modeling في بلندر.",
+      "الخامات: مادة زجاجية واقعية مع معامل انكسار مضبوط بدقة.",
+      "السائل الداخلي: Shader مخصص بلون كهرماني مع تدرج ضوئي.",
+      "الإضاءة: ثلاث نقاط ضوئية Softbox لإبراز الانعكاسات والعمق.",
+      "الانعكاسات: استخدام HDRI خفيف لإضافة واقعية دون تشويش زائد.",
+      "الظل: ظل ناعم محسوب عبر Cycles لإظهار ثبات المنتج.",
+      "الغطاء: مادة معدنية مع Roughness منخفض لإعطاء لمعان واقعي.",
+      "الخلفية: Gradient وردي متدرج لإبراز المنتج بصرياً.",
+      "الرندر: باستخدام Cycles بدقة عالية 1080p مع Denoise.",
+      "الهدف: إبراز القدرة على تصميم منتج واقعي بالكامل داخل بلندر."
+    ]
+  },
+  {
+    "id": "maono-dm30-3d-model-render",
+    "name": "Maono DM30",
+    "category": "product",
+    "tag": "مايكروفون",
+    "cover": "assets/3d/maono-dm30-3d-model-render/cover.jpg",
+    "gallery": [
+      "assets/3d/maono-dm30-3d-model-render/cover.jpg"
+    ],
+    "short": "نموذج ثلاثي الأبعاد احترافي مستوحى من مايكروفون Maono DM30 مع تفاصيل دقيقة وإضاءة واقعية.",
+    "description": "نموذج ثلاثي الأبعاد عالي الدقة لمايكروفون Maono DM30، تم تصميمه بالكامل داخل برنامج Blender مع المحافظة على الهوية البصرية للمايكروفون الأصلي. يتميّز النموذج بجسم أسطواني ناعم وشبكة معدنية أمامية، إضافة إلى إضاءة لونية واقعية تحاكي RGB الخاصة بالمنتج الحقيقي. النموذج مناسب لعرض المنتجات، المشاريع الإعلانية، أو استخدامه في بورتفوليو التصميم ثلاثي الأبعاد.",
+    "software": [
+      "Blender"
+    ],
+    "render": "Cycles",
+    "polys": "",
+    "time": "3 أيام",
+    "details": [
+      "تم التصميم في Blender 3.6.",
+      "محرك Cycles.",
+      "عدد العينات 128.",
+      "إضاءة HDRI.",
+      "ظلال واقعية .",
+      "عمق مجال مفعّل.",
+      "دقة 1456x768.",
+      "معالجة لونية بعد الرندر."
     ]
   }
 ];
 
-window.PRODUCTS_3D = window.PRODUCTS_3D || [];
-window.WEB_PROJECTS = window.WEB_PROJECTS || [];
+window.WEB_PROJECTS = [
+  {
+    "id": "School Management System",
+    "name": "School Management System",
+    "subtitle": "نظام إدارة مدرسة",
+    "icon": "fa-code",
+    "category": "fullstack",
+    "tech": [
+      "html",
+      "PHP",
+      "CSS",
+      "JAVASCRIPT",
+      "MYSQL"
+    ],
+    "desc": "تطبيق ويب متكامل بأدوار متعددة: الإدارة، المشرفون الأكاديميون، والمعلمون. يقدّم المعلمون خطط الدروس الأسبوعية مع شرح مفصّل ووسائل تعليمية، ويتلقى المشرفون إشعارات لتقييم المعلمين والجدول.",
+    "bullets": [
+      "نقل تلقائي للجداول بين الأسابيع مع منع التعارضات والعطل.",
+      "إشعارات فورية للمشرفين لتقييم المعلمين والجداول.",
+      "إدارة السجلات المالية للطلاب: خصومات، دفعات، وأرصدة متبقية.",
+      "تصدير PDF مع اسم المدرسة وشعارها والتاريخ والصف.",
+      "استيراد/تصدير Excel و JSON للبيانات.",
+      "نظام أدوار متكامل: إدارة، مشرفون، معلمون."
+    ],
+    "links": {
+      "github": null,
+      "demo": null
+    },
+    "private": true
+  },
+  {
+    "id": "kids-center",
+    "name": "نظام إدارة مراكز الأطفال",
+    "subtitle": "نظام إداري احترافي",
+    "icon": "fa-child",
+    "category": "fullstack",
+    "tech": [
+      "PHP",
+      "MySQL",
+      "JavaScript",
+      "Excel / PDF"
+    ],
+    "desc": "نظام إداري كامل لإدارة المركز والموظفين مع تقارير مالية.",
+    "bullets": [
+      "إحصائيات يومية وشهرية للأطفال والإيرادات وصافي الأرباح.",
+      "نظام صلاحيات (أداري ينشئ حسابات للموظفين).",
+      "مقارنة الأشهر، تصدير تقارير Excel و PDF.",
+      "قابل لإعادة الاستخدام كنموذج اشتراك شهري (SaaS) للمراكز الأخرى."
+    ],
+    "links": {
+      "github": null,
+      "demo": null
+    },
+    "private": true
+  },
+  {
+    "id": "therawork",
+    "name": "TheraWork",
+    "subtitle": "نظام إدارة المواعيد",
+    "icon": "fa-calendar-check",
+    "category": "frontend",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Local Storage"
+    ],
+    "desc": "تطبيق ويب تفاعلي (SPA) لإدارة المواعيد مع كشف تلقائي للصراعات.",
+    "bullets": [
+      "جدول ديناميكي مع إضافة/حذف الصفوف والأعمدة.",
+      "نظام ألوان ذكي يكشف 8 أنواع من التعارضات.",
+      "تنبيهات صوتية وزمنية، حفظ محلي، تصدير/استيراد البيانات."
+    ],
+    "links": {
+      "github": "https://github.com/TheraLaugh/TheraWork",
+      "demo": null
+    }
+  },
+  {
+    "id": "therafollowers",
+    "name": "TheraFollowers",
+    "subtitle": "منصة زيادة متابعين إنستغرام",
+    "icon": "fa-users",
+    "category": "fullstack",
+    "tech": [
+      "HTML",
+      "CSS",
+      "PHP",
+      "MySQL"
+    ],
+    "desc": "منصة متكاملة لإدارة طلبات المتابعة، بنظام حسابات وصلاحيات.",
+    "bullets": [
+      "طريقتان: يدوي (باستخدام حساباتي) ونظام التبادل بين المستخدمين.",
+      "نظام حسابات متكامل (تسجيل دخول وإنشاء حسابات).",
+      "لوحة تحكم للمستخدم لإدارة الطلبات."
+    ],
+    "links": {
+      "github": "https://github.com/TheraLaugh",
+      "demo": "https://theralaugh.kesug.com"
+    }
+  },
+  {
+    "id": "theraqr",
+    "name": "TheraQR",
+    "subtitle": "مولّد رموز QR",
+    "icon": "fa-qrcode",
+    "category": "tools",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "desc": "أداة سريعة لتوليد رموز QR لأي نص أو رابط مع إمكانية التحميل.",
+    "bullets": [
+      "واجهة بسيطة وسريعة.",
+      "تخصيص الحجم واللون.",
+      "تحميل فوري بصيغة PNG."
+    ],
+    "links": {
+      "github": "https://github.com/TheraLaugh",
+      "demo": null
+    }
+  },
+  {
+    "id": "theragym",
+    "name": "TheraGYM",
+    "subtitle": "مساعد التمارين الرياضية",
+    "icon": "fa-dumbbell",
+    "category": "tools",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "desc": "تطبيق لتنظيم التمارين ومتابعة التقدم اليومي.",
+    "bullets": [
+      "جدول تمارين قابل للتخصيص.",
+      "تتبع التقدم اليومي.",
+      "واجهة عربية نظيفة."
+    ],
+    "links": {
+      "github": "https://github.com/TheraLaugh",
+      "demo": null
+    }
+  },
+  {
+    "id": "therastat",
+    "name": "TheraStat",
+    "subtitle": "أدوات إحصائية",
+    "icon": "fa-chart-line",
+    "category": "tools",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "desc": "مجموعة أدوات إحصائية بسيطة للمستخدم العربي.",
+    "bullets": [
+      "حسابات إحصائية متعددة.",
+      "واجهة بسيطة وواضحة.",
+      "نتائج فورية."
+    ],
+    "links": {
+      "github": "https://github.com/TheraLaugh",
+      "demo": null
+    }
+  }
+];
