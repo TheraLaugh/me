@@ -1,6 +1,6 @@
 /* =========================================================
    Portfolio Data — يُدار عبر admin.html
-   آخر تحديث: 2026-11-12T16:05:04.827Z
+   آخر تحديث: 2026-11-12T16:10:25.894Z
    ========================================================= */
 
 window.SITE = {
@@ -217,9 +217,9 @@ window.PRODUCTS_3D = [
     "name": "Valentino Uomo",
     "category": "perfume",
     "tag": "زجاج",
-    "cover": "assets/3d/PERFUME/cover.jpg",
+    "cover": "assets/3d/Valentino-Uomo-3d-model-render/cover.jpg",
     "gallery": [
-      "assets/3d/PERFUME/cover.jpg"
+      "assets/3d/Valentino-Uomo-3d-model-render/cover.jpg"
     ],
     "short": "عطر فاخر التصميم، عطر زجاجي مزخرف",
     "description": "عطر فاخر التصميم، زجاجي مزخرف، تم تصميمه بواسطة blender مع تصميم دقيق لاظهار تفاصيل المنتج، ثم مرحلة textures، ثم مرحلة render وتم فيه تصميم بيئة بسيطة جدا وهي حائط أحمر مع توجيه بقعة الضوء بشكل مكثيف على المنتج لابراز جمال المنتج وتفاصيله.",
